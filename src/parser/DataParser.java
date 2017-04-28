@@ -6,7 +6,7 @@ import java.io.LineNumberReader;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import register.Memory;
+import managers.Memory;
 import simulator.ScoreBoard;
 
 public class DataParser {
@@ -25,16 +25,14 @@ public class DataParser {
 			}
 			
 			lineNumberReader.close();
-			//String address[]=new String[lineCount];
-			
 			
 			int count = 1;
 			bufferedReader = new BufferedReader(new FileReader(filename));
 			while((memoryLine = bufferedReader.readLine()) != null){
-				Memory.addValueToMemory(count, memoryLine);
+				Memory.memory.put(Memory.start_address + count, Integer.parseInt(memoryLine, 2));
 				count++;
 			}
-			//ScoreBoard.runaddress(address);
+			
 			
 		}catch(Exception e){
 			System.out.println("Exception "+ e);

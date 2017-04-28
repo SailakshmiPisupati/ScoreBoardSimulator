@@ -2,10 +2,9 @@ package instructions;
 
 import java.util.ArrayList;
 
+import instructions.operands.*;
+
 import managers.RegisterManager;
-import instructions.operands.ImmediateOperand;
-import instructions.operands.MemoryOperand;
-import instructions.operands.RegisterOperand;
 
 public class ADDD extends Instruction{
 	RegisterOperand register_operand1; // destination

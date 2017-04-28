@@ -2,7 +2,8 @@ package instructions;
 
 import java.util.ArrayList;
 
-import instructions.Operands.*;
+import instructions.operands.*;
+import managers.RegisterManager;
 
 public class LI extends Instruction{
 	RegisterOperand register_operand;

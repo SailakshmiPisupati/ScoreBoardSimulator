@@ -2,9 +2,9 @@ package instructions;
 
 import java.util.ArrayList;
 
-import managers.MemoryManager;
+import instructions.operands.*;
+import managers.Memory;
 import managers.RegisterManager;
-import instructions.Operands.*;
 
 public class LW extends Instruction{
 	RegisterOperand register_operand;
@@ -22,7 +22,7 @@ public class LW extends Instruction{
 
 	@Override
 	public void write() throws Exception {
-		double value = MemoryManager.read(memory_operand.final_address(), "word");
+		double value = Memory.read(memory_operand.final_address(), "word");
 		register_operand.setValue(value);
 		RegisterManager.write(register_operand, value);
 	}

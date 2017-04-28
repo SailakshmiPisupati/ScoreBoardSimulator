@@ -2,10 +2,8 @@ package instructions;
 
 import java.util.ArrayList;
 
+import instructions.operands.*;
 import managers.RegisterManager;
-import instructions.Operands.ImmediateOperand;
-import instructions.Operands.MemoryOperand;
-import instructions.Operands.RegisterOperand;
 
 public class DADD extends Instruction{
 	RegisterOperand register_operand1;

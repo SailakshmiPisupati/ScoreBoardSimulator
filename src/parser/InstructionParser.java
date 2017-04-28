@@ -2,18 +2,19 @@ package parser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.HashMap;
 import java.util.TreeMap;
 
 import instructions.*;
-import instructions.Operands.*;
+import instructions.operands.*;
 import simulator.ScoreBoard;
-import instructionopcodes.Instruction;
+
 public class InstructionParser {
 	private static BufferedReader bufferedReader;
 
-	public static void readFile(String filename) {
+	public static void readFile(String filename) throws Exception {
 		try{
 			String line;	
 			bufferedReader = new BufferedReader(new FileReader(filename));
@@ -21,7 +22,7 @@ public class InstructionParser {
 			while((line = bufferedReader.readLine()) != null){
 				String label = null;
 				
-				if(line.contains(":")){				
+				if(line.contains(":")){	
 					String[] tokens = line.split(":");					
 					label = tokens[0];
 					line = tokens[1];
@@ -30,22 +31,20 @@ public class InstructionParser {
 				String[] tokens = line.trim().split("[\\s]", 2);
 				String opcode = tokens[0].trim().toUpperCase().replace(".", "");		
 				String[] operands = new String[0];
-
+				
 				if(tokens.length > 1){
-					operands = tokens[1].replaceAll("\\s+", "").trim().split(",");				
-				}
-
-				operands = tokens[1].split(",");
-
+					operands = tokens[1].replaceAll("\\s+", "").trim().split(",");	
+					//System.out.println("Opcode "+opcode+" operands "+operands[0]+" "+operands[1]);
+				}	
 				Instruction instruction = createInstruction(opcode, operands);
-
+				
 				ScoreBoard.instructions.put(count++, instruction);
 				
 				if(label != null){
 					ScoreBoard.label_map.put(label, count);			
 				}
 			}
-		}catch(Exception e){
+		}catch(IOException e){
 			System.out.println("Exception "+ e);
 		}
 	}

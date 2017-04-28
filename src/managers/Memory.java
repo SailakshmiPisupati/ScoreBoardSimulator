@@ -1,7 +1,7 @@
 package managers;
 import java.util.TreeMap;
 
-public class MemoryManager {
+public class Memory {
 	public static int start_address = 0x100;
 	public static int end_address;
 	public static TreeMap<Integer, Integer> memory = new TreeMap<Integer, Integer>();

@@ -2,9 +2,8 @@ package instructions;
 
 import java.util.ArrayList;
 
-import instructions.Operands.ImmediateOperand;
-import instructions.Operands.MemoryOperand;
-import instructions.Operands.RegisterOperand;
+import instructions.operands.*;
+import managers.RegisterManager;
 
 public class SUBD extends Instruction{
 	RegisterOperand register_operand1;

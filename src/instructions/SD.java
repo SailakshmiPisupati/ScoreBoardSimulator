@@ -2,8 +2,9 @@ package instructions;
 
 import java.util.ArrayList;
 
-import managers.MemoryManager;
-import instructions.Operands.*;
+import instructions.operands.*;
+import managers.Memory;
+import managers.RegisterManager;
 
 public class SD extends Instruction{
 	RegisterOperand register_operand;
@@ -16,7 +17,7 @@ public class SD extends Instruction{
 
 	@Override
 	public void write() throws Exception {
-		MemoryManager.write(memory_operand.final_address(), "double", (int) register_operand.getValue());
+		Memory.write(memory_operand.final_address(), "double", (int) register_operand.getValue());
 	}
 
 	@Override

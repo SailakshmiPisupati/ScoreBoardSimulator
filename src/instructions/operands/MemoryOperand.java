@@ -6,9 +6,9 @@ public class MemoryOperand extends Operand {
 	int offset_address;
 	int value;
 	
-	public MemoryOperand(String str) throws Exception {
+	public MemoryOperand(String string) throws Exception {
 		super();
-		
+		String str = string.trim();
 		if(str.contains("(")){
 			String offset = str.substring(0, str.indexOf("("));
 			this.offset_address = Integer.parseInt(offset);

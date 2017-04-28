@@ -1,25 +1,38 @@
 package stages;
 
-import instructionopcodes.Instruction;
+import functionunits.FetchUnit;
+import instructions.Instruction;
 
-public class FetchStage extends Thread{
-	int instructionNumber;
-	
-	public static int fetchInstruction(int instructionNumber){
+import java.util.ArrayList;
+
+import managers.OutputManager;
+import simulator.ScoreBoard;
+
+
+
+public class FetchStage{
+
+	public static int instructionCount = 1;
+	public static ArrayList<Integer> fetchQueue = new ArrayList<Integer>();
+	public static void execute() {
 		
-//		System.out.println("Instruction number "+instructionNumber+" at Fetch stage");
-		
-			
-		
-		
-		//check if the unit is free - return true
-		//if free send the instruction to next stage - return false
-		//else halt.
-		
-		return instructionNumber++;
+		if(!fetchIsBusy()){
+			Instruction instruction = ScoreBoard.instructions.get(instructionCount);
+			System.out.println("*******Fetch Stage "+ instruction.toString());
+			FetchUnit.executeFetch(instructionCount);
+			instructionCount++;
+//			int gid = OutputManager.add();
+//			OutputManager.write(gid, 0, instructionCount);
+		}
+		else{
+			if(fetchQueue.size()>0){
+				fetchQueue.remove(instructionCount);
+			}
+		}
 	}
 	
-	public void run(){
-		System.out.println("Instruction number in fetch");
+	public static boolean fetchIsBusy(){
+		return FetchUnit.isFetchBusy;
 	}
+	
 }

@@ -2,9 +2,7 @@ package instructions;
 
 import java.util.ArrayList;
 
-import instructions.Operands.ImmediateOperand;
-import instructions.Operands.MemoryOperand;
-import instructions.Operands.RegisterOperand;
+import instructions.operands.*;
 
 public class BNE extends Instruction{
 	RegisterOperand register_operand1;
@@ -15,7 +13,7 @@ public class BNE extends Instruction{
 		super();
 		this.register_operand1 = register_operand1;
 		this.register_operand2 = register_operand2;
-		this.label = label;
+		this.label = label.trim();
 	}
 
 	public boolean isConditionSatisfied() throws Exception {

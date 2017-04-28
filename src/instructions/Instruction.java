@@ -2,7 +2,8 @@ package instructions;
 
 import java.util.ArrayList;
 
-import instructions.Operands.*;
+import instructions.operands.*;
+import managers.RegisterManager;
 
 // Data Transfers - LW, SW, L.D, S.D
 // Arithmetic/ logical - DADD, DADDI, DSUB, DSUBI, AND, ANDI, OR, ORI, LI, LUI, ADD.D, MUL.D, DIV.D, SUB.D
