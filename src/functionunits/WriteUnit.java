@@ -15,7 +15,7 @@ public class WriteUnit {
 	
 	public static void execute(int count){
 		setWriteBusy(true);
-		//execution logic of write
+		
 	}
 
 }

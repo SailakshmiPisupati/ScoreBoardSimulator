@@ -2,6 +2,8 @@ package managers;
 
 import java.util.ArrayList;
 
+import simulator.ScoreBoard;
+
 public class OutputManager {
 	public static ArrayList<int[]> output_table = new ArrayList<int[]>();	
 	public static int last_gid = -1;
@@ -10,11 +12,11 @@ public class OutputManager {
 	// 0		1  2  3  4  5  6    7    8		 9
 	// inst_no, F, I, R, E, W, RAW, WAW, struct, WAR
 	private static void printScoreboard() {
-//		System.out.println("----------------------Scoreboard:" + MIPS.cycle + "-----------------------");
+		System.out.println("----------------------Scoreboard:" + ScoreBoard.clockCycle + "-----------------------");
 		System.out.println(String.format(instructionOutputFormatString, "#", "#", "Instruction", "FT", "IS", "RO", "EX", "WB", "RAW", "WAW", "Struct")); // , "WAR"
 		int i=0;
 		for (int[] arr: output_table) {
-//		  System.out.println(String.format(instructionOutputFormatString, i++, arr[0], MIPS.instructions.get(arr[0]), arr[1], arr[2], arr[3], arr[4], arr[5], arr[6] == 1 ? 'Y' : 'N', arr[7] == 1 ? 'Y' : 'N', arr[8] == 1 ? 'Y' : 'N')); // , arr[9] == 1 ? 'Y' : 'N'
+		  System.out.println(String.format(instructionOutputFormatString, i++, arr[0], ScoreBoard.instructions.get(arr[0]), arr[1], arr[2], arr[3], arr[4], arr[5], arr[6] == 1 ? 'Y' : 'N', arr[7] == 1 ? 'Y' : 'N', arr[8] == 1 ? 'Y' : 'N')); // , arr[9] == 1 ? 'Y' : 'N'
 		}
 		System.out.println("--------------------------------------------------------------------------");
 	}

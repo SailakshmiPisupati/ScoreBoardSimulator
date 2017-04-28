@@ -3,6 +3,7 @@ package simulator;
 import java.util.HashMap;
 import java.util.TreeMap;
 
+import managers.OutputManager;
 import instructions.Instruction;
 import parser.*;
 import functionunits.*;
@@ -41,6 +42,7 @@ public class ScoreBoard {
 			ReadStage.execute();
 			IssueStage.execute();
 			FetchStage.execute();
+			OutputManager.printResults();
 			//System.out.println("Cycle "+clockCycle);
 			
 			if(instructions.get(instruction).toString().contains("HLT")){// in order to stop the loop

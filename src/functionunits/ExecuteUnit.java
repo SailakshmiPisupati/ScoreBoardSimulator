@@ -1,5 +1,6 @@
 package functionunits;
 
+import stages.ExecutionStage;
 import stages.WriteStage;
 
 public class ExecuteUnit {
@@ -16,7 +17,9 @@ public class ExecuteUnit {
 	
 	public static void execute(int count){
 		setIsexecuteBusy(true);
+		
 		WriteStage.writeQueue.add(count);
+		ExecutionStage.executeQueue.clear();
 	}
 	
 }
