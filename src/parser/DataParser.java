@@ -6,7 +6,7 @@ import java.io.LineNumberReader;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import managers.Memory;
+import scoreboardstatus.MemoryStatus;
 import simulator.ScoreBoard;
 
 public class DataParser {
@@ -29,7 +29,7 @@ public class DataParser {
 			int count = 1;
 			bufferedReader = new BufferedReader(new FileReader(filename));
 			while((memoryLine = bufferedReader.readLine()) != null){
-				Memory.memory.put(Memory.start_address + count, Integer.parseInt(memoryLine, 2));
+				MemoryStatus.memory.put(MemoryStatus.start_address + count, Integer.parseInt(memoryLine, 2));
 				count++;
 			}
 			

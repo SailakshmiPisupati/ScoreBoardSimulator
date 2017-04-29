@@ -1,8 +1,9 @@
 package functionunits;
 
-import instructions.Instruction;
+import opcodes.Instruction;
+import pipelinestages.Fetch;
+import pipelinestages.Issue;
 import simulator.ScoreBoard;
-import stages.IssueStage;
 
 public class FetchUnit {
 	
@@ -16,9 +17,10 @@ public class FetchUnit {
 		FetchUnit.isFetchBusy = isFetchBusy;
 	}
 	
-	public static void executeFetch(int count){
+	public static void executeFetch(){
 		setFetchBusy(true);
-		IssueStage.issueQueue.add(count);
+		int fetchQueueval = Fetch.fetchQueue.get(0);
+		System.out.println("Fetch q "+fetchQueueval);
+		Issue.issueQueue.add(fetchQueueval);
 	}
-
 }

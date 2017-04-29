@@ -1,7 +1,7 @@
 package functionunits;
 
-import stages.ExecutionStage;
-import stages.ReadStage;
+import pipelinestages.Execute;
+import pipelinestages.Read;
 
 public class ReadUnit {
 	
@@ -17,8 +17,8 @@ public class ReadUnit {
 	
 	public static void execute(int count){
 		setReadBusy(true);
-		ExecutionStage.executeQueue.add(count);
-		ReadStage.readQueue.clear();
+		Execute.executeQueue.add(count);
+		Read.readQueue.clear();
 		
 	}
 

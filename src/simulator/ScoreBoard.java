@@ -3,11 +3,11 @@ package simulator;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import managers.OutputManager;
-import instructions.Instruction;
+import opcodes.Instruction;
 import parser.*;
+import pipelinestages.*;
+import scoreboardstatus.OutputStatus;
 import functionunits.*;
-import stages.*;
 
 public class ScoreBoard {
 	public static TreeMap<Integer, Instruction> instructions = new TreeMap<Integer, Instruction>();
@@ -37,12 +37,12 @@ public class ScoreBoard {
 		while(!finish){
 
 			System.out.println(instructions.get(instruction));
-			WriteStage.execute();
-			ExecutionStage.execute();
-			ReadStage.execute();
-			IssueStage.execute();
-			FetchStage.execute();
-			OutputManager.printResults();
+			Write.execute();
+			Execute.execute();
+			Read.execute();
+			Issue.execute();
+			Fetch.execute();
+			OutputStatus.printResults();
 			//System.out.println("Cycle "+clockCycle);
 			
 			if(instructions.get(instruction).toString().contains("HLT")){// in order to stop the loop

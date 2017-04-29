@@ -1,7 +1,7 @@
 package functionunits;
 
-import stages.ExecutionStage;
-import stages.WriteStage;
+import pipelinestages.Execute;
+import pipelinestages.Write;
 
 public class ExecuteUnit {
 
@@ -18,8 +18,8 @@ public class ExecuteUnit {
 	public static void execute(int count){
 		setIsexecuteBusy(true);
 		
-		WriteStage.writeQueue.add(count);
-		ExecutionStage.executeQueue.clear();
+		Write.writeQueue.add(count);
+		Execute.executeQueue.clear();
 	}
 	
 }
