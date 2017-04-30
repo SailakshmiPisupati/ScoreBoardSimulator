@@ -1,9 +1,11 @@
 package functionunits;
 
+import java.util.ArrayList;
+
 public class Adder {
 	private static int noOfUnits;
 	private static int executionCycle;
-	private static int noOfUnitsUsed;
+	public static ArrayList<Integer> adderQueue = new ArrayList<Integer>();
 	
 	public static int getNoOfUnits() {
 		return noOfUnits;
@@ -17,25 +19,5 @@ public class Adder {
 	}
 	public static void setExecutionCycle(int executionCycle) {
 		Adder.executionCycle = executionCycle;
-	}
-	
-	public static int getNoOfUnitsUsed() {
-		return noOfUnitsUsed;
-	}
-	public static void setNoOfUnitsUsed(int noOfUnitsUsed) {
-		Adder.noOfUnitsUsed = noOfUnitsUsed;
-	}
-	public static int getFreeUnits(){
-		int freeUnits = getNoOfUnits() - getNoOfUnitsUsed();
-		return freeUnits;
-	}
-	
-	public static boolean checkIsFree(){
-		if(getFreeUnits()>0){
-			return true;
-		}
-		else{
-			return false;
-		}
 	}
 }

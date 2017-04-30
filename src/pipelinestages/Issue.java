@@ -9,6 +9,8 @@ import opcodes.Instruction;
 import scoreboardstatus.OutputStatus;
 import simulator.ScoreBoard;
 
+//Hazards to handle - Structural (free FU), WAW (ensure destination registers are not being written)
+
 public class Issue {
 	public static ArrayList<Integer> issueQueue = new ArrayList<Integer>();
 	public static void execute() {

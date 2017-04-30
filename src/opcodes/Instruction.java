@@ -17,7 +17,7 @@ public abstract class Instruction {
 	public abstract ArrayList<Register> getSourceRegisters() throws Exception;
 	public abstract Memory getMemoryOperand() throws Exception;
 	public abstract Immediates getImmediateOperand() throws Exception;
-	public String label;
+	public static String label;
 
 	@Override
 	public String toString() {
@@ -74,4 +74,39 @@ public abstract class Instruction {
 		}
 		return false;		
 	};
+	
+	public String getOpcode(){
+		return this.getClass().getSimpleName();
+	}
+	
+	public String getFunctionalUnit(){
+		
+		switch(this.getClass().getSimpleName()){
+		case "LI":
+		case "LUI":
+		case "DADD":
+		case "DADDI":
+		case "DSUB":
+		case "DSUBI":
+		case "AND":
+		case "ANDI":
+		case "OR":
+		case "ORI":
+			return "Integer";
+		case "LD":
+		case "SD":
+		case "SW":
+		case "LW":
+			return "Load";
+		case "ADDD":
+		case "SUBD":
+			return "Adder";
+		case "MULTD":
+			return "Multiplier";
+		case "DIVD": 
+			return "Divider";
+		}
+		return null;
+	}
+	
 }

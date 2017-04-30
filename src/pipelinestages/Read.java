@@ -7,7 +7,7 @@ import simulator.ScoreBoard;
 import functionunits.IssueUnit;
 import functionunits.ReadUnit;
 
-
+// Hazards to handle - RAW (ensure source registers are not being written)
 
 public class Read {
 

@@ -7,7 +7,7 @@ import simulator.ScoreBoard;
 public class OutputStatus {
 	public static ArrayList<int[]> output = new ArrayList<int[]>();	
 	public static int lastClock = -1;
-	public static final String instructionOutputFormatString = " %-2s %-2s %-15s  %-4s  %-4s  %-4s  %-4s  %-3s  %-3s  %-3s  %-3s "; // %-6s
+	public static final String instructionOutputFormatString = " %-2s %-2s %-20s  %-4s  %-4s  %-4s  %-4s  %-3s  %-3s  %-3s  %-3s "; // %-6s
 
 	// 0		1  2  3  4  5  6    7    8		 9
 	// inst_no, F, I, R, E, W, RAW, WAW, struct, WAR

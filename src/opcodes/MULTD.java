@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import operands.*;
 import scoreboardstatus.RegisterStatus;
 
-public class MULD extends Instruction{
+public class MULTD extends Instruction{
 	Register register_operand1;
 	Register register_operand2;
 	Register register_operand3;
 
-	public MULD(Register register_operand1, Register register_operand2, Register register_operand3) {
+	public MULTD(Register register_operand1, Register register_operand2, Register register_operand3) {
 		super();
 		this.register_operand1 = register_operand1;
 		this.register_operand2 = register_operand2;

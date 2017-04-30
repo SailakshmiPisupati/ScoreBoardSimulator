@@ -1,16 +1,13 @@
 package functionunits;
 
+import java.util.ArrayList;
+
 public class Divider {
 	private static int noOfUnits;
 	private static int executionCycle;
-	private static int noOfUnitsUsed;
+	public static ArrayList<Integer> dividerQueue = new ArrayList<Integer>();
 	
-	public static int getNoOfUnitsUsed() {
-		return noOfUnitsUsed;
-	}
-	public static void setNoOfUnitsUsed(int noOfUnitsUsed) {
-		Divider.noOfUnitsUsed = noOfUnitsUsed;
-	}
+	
 	public static int getNoOfUnits() {
 		return noOfUnits;
 	}
@@ -22,19 +19,6 @@ public class Divider {
 	}
 	public static void setExecutionCycle(int executionCycle) {
 		Divider.executionCycle = executionCycle;
-	}
-	public static int getFreeUnits(){
-		int freeUnits = getNoOfUnits() - getNoOfUnitsUsed();
-		return freeUnits;
-	}
-	
-	public static boolean checkIsFree(){
-		if(getFreeUnits()>0){
-			return true;
-		}
-		else{
-			return false;
-		}
 	}
 	
 }
