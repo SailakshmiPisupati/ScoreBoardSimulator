@@ -2,6 +2,7 @@ package functionunits;
 
 import pipelinestages.Execute;
 import pipelinestages.Issue;
+import pipelinestages.Write;
 import simulator.ScoreBoard;
 
 public class WriteUnit {

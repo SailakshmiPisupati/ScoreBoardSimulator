@@ -26,11 +26,13 @@ public class Fetch{
 			//Instruction instruction = ScoreBoard.instructions.get(instructionCount);
 			fetchQueue.add(instructionCount);
 			//for(int i=instructionCount;i<fetchQueue.size();i++){
-				FetchUnit.executeFetch(instructionCount);
+				
 				int startId = OutputStatus.add();
 				OutputStatus.append(startId, 0, instructionCount);
 				OutputStatus.append(startId, 1, ScoreBoard.clockCycle);
+				FetchUnit.executeFetch(instructionCount);
 				instructionCount++;
+				
 			//}
 			
 		}

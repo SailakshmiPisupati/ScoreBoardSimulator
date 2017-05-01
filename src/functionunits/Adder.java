@@ -1,14 +1,14 @@
 package functionunits;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import simulator.ScoreBoard;
 
 public class Adder {
 	private static int noOfUnits;
 	private static int executionCycle;
-	public static ArrayList<String> adderQueue = new ArrayList<String>();
-	public static int adderCycle[] =new int[10];
+	public static HashMap<Integer, Integer> adderQueue = new HashMap<Integer, Integer>();
 	public static int getNoOfUnits() {
 		return noOfUnits;
 	}
@@ -23,27 +23,26 @@ public class Adder {
 		Adder.executionCycle = executionCycle;
 	}
 	
-	public static void assignAdder(){
-		if(adderQueue.isEmpty()){
-			System.out.println("Adder unit is busy");
-			//TODO stall adder instrucitons
-		}
-		else{
-			System.out.println("Assigning adder unit");
-			String adder = adderQueue.remove(0);
-		}
-	}
+//	public static void assignAdder(){
+//		int totalAllocated =0;
+//		for(int i=0;i<noOfUnits;i++){
+//			if(FunctionalUnit.allocatedUnits.contains(adderQueue.get(i))){
+//				totalAllocated++;
+//			}
+//		}
+//		if(totalAllocated == noOfUnits){
+//			
+//		}
+//	}
 	
-	public static void releaseAdder(String adderValue){
-		adderQueue.add(adderValue);
-		int val= Integer.parseInt(Character.toString(adderValue.charAt(adderValue.length()-1)));
-		adderCycle[val]=ScoreBoard.clockCycle;
-	}
-	
-	public static void initializeAdders()throws Exception{
-		for(int i=0;i<noOfUnits;i++){
-			adderQueue.add("Adder"+i);
-			adderCycle[i]=0;
-		}		
-	}
+//	public static void releaseAdder(String adderValue){
+//		adderQueue.add(adderValue);
+//		int val= Integer.parseInt(Character.toString(adderValue.charAt(adderValue.length()-1)));
+//	}
+//	
+//	public static void initializeAdders()throws Exception{
+//		for(int i=0;i<noOfUnits;i++){
+//			adderQueue.put(i, executionCycle);
+//		}		
+//	}
 }

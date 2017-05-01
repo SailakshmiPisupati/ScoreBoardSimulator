@@ -17,6 +17,7 @@ public class IssueUnit {
 	
 	public static boolean isIssueBusy;
 	public static String functionalUnit;
+	
 	public static boolean isIssueBusy() {
 		return isIssueBusy;
 	}
@@ -27,17 +28,14 @@ public class IssueUnit {
 
 	public static void execute(int count) {
 		setIssueBusy(true);
+		Instruction inst = ScoreBoard.instructions.get(count);	
 		functionalUnit = Instruction.getFunctionalUnit(ScoreBoard.instructions.get(count));
 		System.out.println("FU "+functionalUnit);
 		
-		//TODO check if the functional unit is free
 		if(FunctionalUnit.checkIfFunctionalUnitIsFree(functionalUnit)){
-			FunctionalUnit.assignFunctionalUnit(functionalUnit);
-			Instruction inst = ScoreBoard.instructions.get(count);
-			System.out.println("Instruction in issue is :"+ inst.toString()+" opcode is "+inst.getOpcode());
+			FunctionalUnit.assignFunctionalUnit(functionalUnit, count);
 			if(inst instanceof BNE || inst instanceof BEQ){
 				ScoreBoard.halt = true;
-				Fetch.fetchQueue.clear();
 				Fetch.setInstructionCount(ScoreBoard.label_map.get(BNE.label));
 			}
 			else if(inst instanceof HLT){ // in order to stop the loop
@@ -47,13 +45,14 @@ public class IssueUnit {
 			}else{
 				Read.readQueue.add(count);
 			}
-
+			
+			FetchUnit.setFetchBusy(false);
 		}else{
-			//TODO make the structural hazrd
+			
+			FetchUnit.setFetchBusy(true);
 		}
 		
 		
 	}
-	
 
 }

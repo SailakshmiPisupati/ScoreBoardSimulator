@@ -3,12 +3,14 @@ package functionunits;
 import opcodes.Instruction;
 import pipelinestages.Fetch;
 import pipelinestages.Issue;
+import scoreboardstatus.OutputStatus;
 import simulator.ScoreBoard;
 
 public class FetchUnit {
 	
 	public static boolean isFetchBusy = false;
-
+	
+	
 	public static boolean isFetchBusy() {
 		return isFetchBusy;
 	}
@@ -17,9 +19,9 @@ public class FetchUnit {
 		FetchUnit.isFetchBusy = isFetchBusy;
 	}
 	
-	public static void executeFetch(int instructionCount){
+	public static void executeFetch(int count){
 		setFetchBusy(true);
 		System.out.println("Issue count"+Issue.issuedInstruction);
-		Issue.issueQueue.add(Fetch.fetchQueue.get(Issue.issuedInstruction));
+		Issue.issueQueue.add(Fetch.fetchQueue.remove(0));
 	}
 }
