@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import opcodes.Instruction;
 import scoreboardstatus.OutputStatus;
+import scoreboardstatus.RegisterStatus;
 import simulator.ScoreBoard;
 import functionunits.ExecuteUnit;
 import functionunits.FetchUnit;
@@ -16,7 +17,7 @@ public class Write {
 	int instructionNumber;
 	public static ArrayList<Integer> writeQueue = new ArrayList<Integer>();
 	public static int writeexecuted =0;
-	public static void execute() {
+	public static void execute() throws Exception {
 		int startId;
 		if(!WriteUnit.isWriteBusy){
 			if(writeQueue.size()!= 0){
@@ -34,14 +35,16 @@ public class Write {
 	}
 	
 	
-	public static void releaseResources(){
+	public static void releaseResources() throws Exception{
 		if(WriteUnit.isWriteBusy()){
 			if(Execute.isexecute){
 				
 			}else{
 				WriteUnit.setWriteBusy(false);
 				System.out.println("Releasing unit "+IssueUnit.functionalUnit);
-				FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(writeexecuted-1)), (writeexecuted-1));
+				Instruction instruction = ScoreBoard.instructions.get(writeexecuted-1);
+				FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (writeexecuted-1));
+				RegisterStatus.destinationRegisters.remove(instruction.getDestinationRegister());
 				IssueUnit.setIssueBusy(false);
 				ReadUnit.setReadBusy(false);
 				ExecuteUnit.setIsexecuteBusy(false);

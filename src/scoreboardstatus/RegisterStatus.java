@@ -1,4 +1,5 @@
 package scoreboardstatus;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,7 +18,7 @@ public class RegisterStatus {
 	static boolean[] integer_register_writing = new boolean[32];
 //	static boolean[] floating_point_register_reading = new boolean[32];
 	static boolean[] floating_point_register_writing = new boolean[32];
-
+	public static ArrayList<Register> destinationRegisters= new ArrayList<Register>();
 	public static boolean getWriteStatus(Register register_operand) throws Exception {
 		if(register_operand.floating_point)
 			return integer_register_writing[register_operand.index-1];

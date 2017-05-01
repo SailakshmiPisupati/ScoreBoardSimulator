@@ -7,7 +7,9 @@ import functionunits.IssueUnit;
 import java.util.ArrayList;
 
 import opcodes.Instruction;
+import operands.Register;
 import scoreboardstatus.OutputStatus;
+import scoreboardstatus.RegisterStatus;
 import simulator.ScoreBoard;
 
 //Hazards to handle - Structural (free FU), WAW (ensure destination registers are not being written)
@@ -25,11 +27,12 @@ public class Issue {
 		Issue.branchCondition = branchCondition;
 	}
 	public static ArrayList<Integer> issueQueue = new ArrayList<Integer>();
-	public static void execute() {
+	public static void execute() throws Exception {
 		int startId =0;
 		if(issueQueue.size()!=0){
 			startId = issueQueue.get(0);
-			functionalUnit = Instruction.getFunctionalUnit(ScoreBoard.instructions.get(startId));
+			Instruction instruction = ScoreBoard.instructions.get(startId);
+			functionalUnit = Instruction.getFunctionalUnit(instruction);
 			System.out.println("FU "+functionalUnit);
 			
 			if(FunctionalUnit.checkIfFunctionalUnitIsFree(functionalUnit)){
@@ -43,6 +46,18 @@ public class Issue {
 		
 		if(unitAvailable){
 			if(issueQueue.size()!= 0){
+				Instruction instruction = ScoreBoard.instructions.get(startId);
+				ArrayList<Register> sourceReg = instruction.getSourceRegisters();
+				System.out.println(sourceReg);
+				System.out.println(RegisterStatus.destinationRegisters);
+				for(int i=0;i<sourceReg.size();i++){
+					if(RegisterStatus.destinationRegisters.contains(sourceReg.get(i))){
+						System.out.println(sourceReg.get(i));
+						System.out.println("RAW hazard");
+						OutputStatus.appendTo(startId, 6, 1);
+					}
+				}
+				
 				for(int i=0;i<issueQueue.size();i++){
 					System.out.println("Issued instructions "+issuedInstruction);
 					startId = issueQueue.remove(i);
