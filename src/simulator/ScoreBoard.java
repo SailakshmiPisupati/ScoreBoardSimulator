@@ -10,7 +10,7 @@ import scoreboardstatus.OutputStatus;
 import functionunits.*;
 
 public class ScoreBoard {
-	private static final int MAX_CYCLE_COUNT = 30;
+	private static final int MAX_CYCLE_COUNT = 20;
 	public static TreeMap<Integer, Instruction> instructions = new TreeMap<Integer, Instruction>();
 	public static HashMap<String, Integer> label_map = new HashMap<String, Integer>();
 	public static int clockCycle =1 ;
@@ -38,6 +38,7 @@ public class ScoreBoard {
 		while(clockCycle < MAX_CYCLE_COUNT){
 
 //			System.out.println(instructions.get(instruction));
+			Release.execute();
 			Write.execute();
 			Execute.execute();
 			Read.execute();

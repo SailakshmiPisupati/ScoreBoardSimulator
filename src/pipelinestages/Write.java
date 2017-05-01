@@ -14,16 +14,15 @@ public class Write {
 	public static int writeexecuted =0;
 	public static void execute() {
 		ExecuteUnit.setIsexecuteBusy(false);
-//		if(!WriteUnit.isWriteBusy){
+		if(!WriteUnit.isWriteBusy){
 			if(writeQueue.size()!= 0){
-				int id = writeQueue.remove(0);
-				WriteUnit.execute(id);
-				
-				OutputStatus.append(id,5,ScoreBoard.clockCycle);
+				int startId = writeQueue.remove(0);
+				OutputStatus.appendTo(startId,5,ScoreBoard.clockCycle);
+				WriteUnit.execute(startId);
 				writeexecuted++;
 			}
 			
-//		}
+		}
 	}
 	
 	

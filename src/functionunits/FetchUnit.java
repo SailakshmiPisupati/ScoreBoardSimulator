@@ -17,10 +17,9 @@ public class FetchUnit {
 		FetchUnit.isFetchBusy = isFetchBusy;
 	}
 	
-	public static void executeFetch(){
+	public static void executeFetch(int instructionCount){
 		setFetchBusy(true);
-		int fetchQueueval = Fetch.fetchQueue.get(0);
-		System.out.println("Fetch q "+fetchQueueval);
-		Issue.issueQueue.add(fetchQueueval);
+		System.out.println("Issue count"+Issue.issuedInstruction);
+		Issue.issueQueue.add(Fetch.fetchQueue.get(Issue.issuedInstruction));
 	}
 }

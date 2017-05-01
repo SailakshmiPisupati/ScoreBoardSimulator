@@ -79,9 +79,9 @@ public abstract class Instruction {
 		return this.getClass().getSimpleName();
 	}
 	
-	public String getFunctionalUnit(){
+	public static String getFunctionalUnit(Instruction instruction){
 		
-		switch(this.getClass().getSimpleName()){
+		switch(instruction.getClass().getSimpleName()){
 		case "LI":
 		case "LUI":
 		case "DADD":
@@ -92,6 +92,9 @@ public abstract class Instruction {
 		case "ANDI":
 		case "OR":
 		case "ORI":
+		case "BNE":
+		case "BEQ":
+		case "J":
 			return "Integer";
 		case "LD":
 		case "SD":

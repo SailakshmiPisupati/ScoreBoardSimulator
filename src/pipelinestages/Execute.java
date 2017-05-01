@@ -8,18 +8,18 @@ import functionunits.ExecuteUnit;
 import functionunits.ReadUnit;
 
 public class Execute {
-
+	public static int executionCycle =0;
 	public static ArrayList<Integer> executeQueue = new ArrayList<Integer>();
 	public static void execute() {
 		ReadUnit.setReadBusy(false);
 		if(!ExecuteUnit.isexecuteBusy){
 			if(executeQueue.size()!= 0){
-//				System.out.println("********Execution Stage - "+executeQueue.get(0));
-				int id = executeQueue.get(0);
-				ExecuteUnit.execute(id);
-				//Read.readQueue.clear();
 				
-				OutputStatus.append(id,4,ScoreBoard.clockCycle);
+				int id = executeQueue.get(0);
+				Issue.issuedInstruction = id;
+				ExecuteUnit.execute(id);
+				executionCycle++;
+				OutputStatus.appendTo(id,4,ScoreBoard.clockCycle);
 			}
 		}	
 	}

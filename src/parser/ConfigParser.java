@@ -12,11 +12,10 @@ import simulator.ScoreBoard;
 
 public class ConfigParser {
 
-	public static void readFile(String filename) {
+	public static void readFile(String filename)throws Exception {
 		BufferedReader bufferedReader;
 		FileReader fileReader;
 		
-		try{
 			String configLine;
 			
 			int instructionCount = 0;
@@ -40,6 +39,7 @@ public class ConfigParser {
 					case "FP ADDER" :
 						Adder.setNoOfUnits(Integer.parseInt(functionalUnit[0].trim()));
 						Adder.setExecutionCycle(Integer.parseInt(functionalUnit[1].trim()));
+						Adder.initializeAdders();
 						break;
 					case "FP MULTIPLIER" :
 						Multiplier.setNoOfUnits(Integer.parseInt(functionalUnit[0].trim()));
@@ -51,11 +51,7 @@ public class ConfigParser {
 						break;
 				}	
 				count++;
-			}
-			
-		}catch(Exception e){
-			System.out.println("Exception "+ e);
-		}	
+			}	
 	}
 	//TODO read config file
 	

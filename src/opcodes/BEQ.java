@@ -7,7 +7,7 @@ import operands.*;
 public class BEQ extends Instruction{
 	Register register_operand1;
 	Register register_operand2;
-	public String label;
+	public static String label;
 	
 	public BEQ(Register register_operand1, Register register_operand2, String label) {
 		super();

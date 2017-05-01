@@ -1,5 +1,9 @@
 package functionunits;
 
+import pipelinestages.Execute;
+import pipelinestages.Issue;
+import simulator.ScoreBoard;
+
 public class WriteUnit {
 	
 	public static boolean isWriteBusy = false;
@@ -15,7 +19,7 @@ public class WriteUnit {
 	
 	public static void execute(int count){
 		setWriteBusy(true);
-		
 	}
+	
 
 }

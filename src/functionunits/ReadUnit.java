@@ -6,6 +6,7 @@ import opcodes.HLT;
 import opcodes.Instruction;
 import pipelinestages.Execute;
 import pipelinestages.Fetch;
+import pipelinestages.Issue;
 import pipelinestages.Read;
 import simulator.ScoreBoard;
 
@@ -25,11 +26,27 @@ public class ReadUnit {
 		setReadBusy(true);
 		Instruction instruction = ScoreBoard.instructions.get(count);
 		if(instruction instanceof BNE){
+			Issue.setBranchCondition(true);
+			System.out.println(BNE.label);
+			System.out.println("new branch count"+ScoreBoard.label_map.get(BNE.label));
+			Fetch.setInstructionCount(ScoreBoard.label_map.get(BNE.label)); 
+			int instructioncount = Fetch.getInstructionCount();
+			System.out.println("INstruction is"+instructioncount);
+			
+//			Fetch.fetchQueue.add(ScoreBoard.label_map.get(BNE.label));
+			Fetch.fetchQueue.add(instructioncount);
+			
 //			TODO
 //			if condition passes{
 //				change fetch stages's count
 //			}
 		}else if(instruction instanceof BEQ){
+			Issue.setBranchCondition(true);
+			System.out.println(BEQ.label);
+			System.out.println("new branch count"+ScoreBoard.label_map.get(BEQ.label));
+			Fetch.setInstructionCount(ScoreBoard.label_map.get(BEQ.label));
+			
+			Fetch.fetchQueue.add(ScoreBoard.label_map.get(BEQ.label));
 //			TODO
 //			if condition passes{
 //				change fetch stages's count

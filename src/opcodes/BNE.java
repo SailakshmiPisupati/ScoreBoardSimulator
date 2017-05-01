@@ -7,7 +7,7 @@ import operands.*;
 public class BNE extends Instruction{
 	Register register_operand1;
 	Register register_operand2;
-	public String label;
+	public static String label;
 	
 	public BNE(Register register_operand1, Register register_operand2, String label) {
 		super();

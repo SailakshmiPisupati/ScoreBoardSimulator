@@ -35,7 +35,7 @@ public class InstructionParser {
 				if(tokens.length > 1){
 					operands = tokens[1].replaceAll("\\s+", "").trim().split(",");
 				}	
-				Instruction instruction = createInstruction(opcode, operands);
+				Instruction instruction = createInstruction(opcode, operands, label);
 				
 				ScoreBoard.instructions.put(count++, instruction);
 				
@@ -48,7 +48,7 @@ public class InstructionParser {
 		}
 	}
 	
-	private static Instruction createInstruction(String opcode, String[] operands) throws Exception {
+	private static Instruction createInstruction(String opcode, String[] operands, String label) throws Exception {
 		Instruction inst = null;
 		Immediates immediate_operand = null;
 		Memory memory_operand = null;
