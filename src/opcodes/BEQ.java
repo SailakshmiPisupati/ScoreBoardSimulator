@@ -2,7 +2,9 @@ package opcodes;
 
 import java.util.ArrayList;
 
-import operands.*;
+import operands.Immediates;
+import operands.Memory;
+import operands.Register;
 
 public class BEQ extends Instruction{
 	Register register_operand1;
@@ -45,13 +47,13 @@ public class BEQ extends Instruction{
 	}
 
 	@Override
-	public Memory getMemoryOperand() throws Exception {
+	public Memory getMemory() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Immediates getImmediateOperand() throws Exception {
+	public Immediates getImmediates() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

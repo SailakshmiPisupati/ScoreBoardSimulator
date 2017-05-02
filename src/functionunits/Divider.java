@@ -23,7 +23,6 @@ public class Divider {
 	public static void assignDivider() {
 		if(dividerQueue.isEmpty()){
 			System.out.println("Divider unit is busy");
-			//TODO stall divider instrucitons
 		}
 		else{
 			System.out.println("Assigning divider unit");

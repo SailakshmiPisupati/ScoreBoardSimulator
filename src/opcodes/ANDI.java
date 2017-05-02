@@ -42,13 +42,13 @@ public class ANDI extends Instruction{
 	}
 
 	@Override
-	public Memory getMemoryOperand() throws Exception {
+	public Memory getMemory() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Immediates getImmediateOperand() throws Exception {
+	public Immediates getImmediates() throws Exception {
 		return this.immediate_operand;
 	}
 

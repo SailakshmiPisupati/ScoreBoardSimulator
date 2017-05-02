@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import operands.*;
 import scoreboardstatus.RegisterStatus;
 
-
-
 public class ORI extends Instruction{
 	Register register_operand1;
 	Register register_operand2;
@@ -44,13 +42,13 @@ public class ORI extends Instruction{
 	}
 
 	@Override
-	public Memory getMemoryOperand() throws Exception {
+	public Memory getMemory() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Immediates getImmediateOperand() throws Exception {
+	public Immediates getImmediates() throws Exception {
 		return this.immediate_operand;
 	}
 

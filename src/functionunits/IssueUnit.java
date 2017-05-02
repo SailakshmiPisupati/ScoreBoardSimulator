@@ -1,17 +1,12 @@
 package functionunits;
 
-import java.util.function.Function;
-
 import opcodes.BEQ;
 import opcodes.BNE;
 import opcodes.HLT;
 import opcodes.Instruction;
 import opcodes.J;
-import operands.Register;
 import pipelinestages.Fetch;
-import pipelinestages.Issue;
 import pipelinestages.Read;
-import scoreboardstatus.OutputStatus;
 import scoreboardstatus.RegisterStatus;
 import simulator.ScoreBoard;
 
@@ -31,9 +26,7 @@ public class IssueUnit {
 	public static void execute(int count) throws Exception {
 		setIssueBusy(true);
 		Instruction instruction = ScoreBoard.instructions.get(count);	
-		functionalUnit = Instruction.getFunctionalUnit(ScoreBoard.instructions.get(count));
-		System.out.println("FU "+functionalUnit);
-		
+		functionalUnit = Instruction.getFunctionalUnit(ScoreBoard.instructions.get(count));	
 		if(FunctionalUnit.checkIfFunctionalUnitIsFree(functionalUnit)){
 			FunctionalUnit.assignFunctionalUnit(functionalUnit, count);
 			if(instruction instanceof BNE || instruction instanceof BEQ){
@@ -47,8 +40,8 @@ public class IssueUnit {
 			}else{
 				Read.readQueue.add(count);
 			}
-			Register destReg = instruction.getDestinationRegister();
-			RegisterStatus.destinationRegisters.add(destReg);
+//			System.out.println(instruction.getDestinationRegister().toString());
+			
 			FetchUnit.setFetchBusy(false);
 		}else{
 			

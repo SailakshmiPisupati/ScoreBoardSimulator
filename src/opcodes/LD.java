@@ -9,7 +9,7 @@ import scoreboardstatus.RegisterStatus;
 public class LD extends Instruction{
 	Register register_operand;
 	Memory memory_operand;
-	
+
 	public LD(Register ro, Memory mo) {
 		this.register_operand = ro;
 		this.memory_operand = mo;
@@ -35,18 +35,19 @@ public class LD extends Instruction{
 	@Override
 	public ArrayList<Register> getSourceRegisters() throws Exception {
 		ArrayList<Register> source_registers = new ArrayList<Register>();
+		if(memory_operand.base_register != null) source_registers.add(memory_operand.base_register);
 		return source_registers;
 	}
 
 	@Override
-	public Memory getMemoryOperand() throws Exception {
+	public Memory getMemory() throws Exception {
 		return this.memory_operand;
 	}
 
 	@Override
-	public Immediates getImmediateOperand() throws Exception {
+	public Immediates getImmediates() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }

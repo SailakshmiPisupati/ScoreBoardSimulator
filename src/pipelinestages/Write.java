@@ -21,7 +21,6 @@ public class Write {
 		int startId;
 		if(!WriteUnit.isWriteBusy){
 			if(writeQueue.size()!= 0){
-				System.out.println(writeQueue);
 				startId = writeQueue.remove(0);
 				OutputStatus.append(startId,5,ScoreBoard.clockCycle);
 				WriteUnit.execute(startId);
@@ -41,10 +40,9 @@ public class Write {
 				
 			}else{
 				WriteUnit.setWriteBusy(false);
-				System.out.println("Releasing unit "+IssueUnit.functionalUnit);
 				Instruction instruction = ScoreBoard.instructions.get(writeexecuted-1);
 				FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (writeexecuted-1));
-				RegisterStatus.destinationRegisters.remove(instruction.getDestinationRegister());
+				RegisterStatus.setDestinationRegisterBusy(instruction.getDestinationRegister().toString(),false);
 				IssueUnit.setIssueBusy(false);
 				ReadUnit.setReadBusy(false);
 				ExecuteUnit.setIsexecuteBusy(false);

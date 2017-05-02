@@ -9,7 +9,7 @@ public class DSUBI extends Instruction{
 	Register register_operand1;
 	Register register_operand2;
 	Immediates immediate_operand;
-	
+
 	public DSUBI(Register register_operand1, Register register_operand2, Immediates immediate_operand) {
 		super();
 		this.register_operand1 = register_operand1;
@@ -32,23 +32,23 @@ public class DSUBI extends Instruction{
 	public ArrayList<Register> getSourceRegisters() throws Exception {
 		ArrayList<Register> source_registers = new ArrayList<Register>();
 		source_registers.add(this.register_operand2);
-		return null;
+		return source_registers;
 	}
 
 	@Override
 	public void write() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public Memory getMemoryOperand() throws Exception {
+	public Memory getMemory() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Immediates getImmediateOperand() throws Exception {
+	public Immediates getImmediates() throws Exception {
 		return this.immediate_operand;
 	}
 

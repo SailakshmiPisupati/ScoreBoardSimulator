@@ -23,9 +23,8 @@ public class Fetch{
 	public static void execute() {
 		
 		if(!FetchUnit.isFetchBusy && instructionCount != -1){
-			//Instruction instruction = ScoreBoard.instructions.get(instructionCount);
 			fetchQueue.add(instructionCount);
-			//for(int i=instructionCount;i<fetchQueue.size();i++){
+//			for(int i=instructionCount;i<fetchQueue.size();i++){
 				
 				int startId = OutputStatus.add();
 				OutputStatus.append(startId, 0, instructionCount);
@@ -33,7 +32,7 @@ public class Fetch{
 				FetchUnit.executeFetch(instructionCount);
 				instructionCount++;
 				
-			//}
+//			}
 			
 		}
 	}

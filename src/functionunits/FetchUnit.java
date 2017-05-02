@@ -21,7 +21,6 @@ public class FetchUnit {
 	
 	public static void executeFetch(int count){
 		setFetchBusy(true);
-		System.out.println("Issue count"+Issue.issuedInstruction);
 		Issue.issueQueue.add(Fetch.fetchQueue.remove(0));
 	}
 }

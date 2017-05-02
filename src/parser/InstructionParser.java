@@ -3,12 +3,9 @@ package parser;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.LineNumberReader;
-import java.util.HashMap;
-import java.util.TreeMap;
-
 import opcodes.*;
 import operands.*;
+import scoreboardstatus.RegisterStatus;
 import simulator.ScoreBoard;
 
 public class InstructionParser {
@@ -42,7 +39,9 @@ public class InstructionParser {
 				if(label != null){
 					ScoreBoard.label_map.put(label, count);
 				}
+				
 			}
+			RegisterStatus.initializeRegisters();
 		}catch(IOException e){
 			System.out.println("Exception "+ e);
 		}
@@ -53,9 +52,38 @@ public class InstructionParser {
 		Immediates immediate_operand = null;
 		Memory memory_operand = null;
 		Register register_operand1 = null, register_operand2 = null, register_operand3 = null;
-		
+
 		switch(opcode){
-		
+		case "LW": // Load Word
+			register_operand1 = new Register(operands[0]);
+			memory_operand = new Memory(operands[1]);
+			inst = new LW(register_operand1, memory_operand);
+			break;
+		case "LD": // Load Double
+			register_operand1 = new Register(operands[0]);
+			memory_operand = new Memory(operands[1]);
+			inst = new LD(register_operand1, memory_operand);
+			break;
+		case "LI": // Load Immediate
+			register_operand1 = new Register(operands[0]);
+			immediate_operand = new Immediates(operands[1]);
+			inst = new LI(register_operand1, immediate_operand);
+			break;
+		case "LUI": // Load upper Immediate
+			register_operand1 = new Register(operands[0]);
+			immediate_operand = new Immediates(operands[1]);
+			inst = new LUI(register_operand1, immediate_operand);
+			break;
+		case "SW": // Store Word
+			register_operand1 = new Register(operands[0]);
+			memory_operand = new Memory(operands[1]);
+			inst = new SW(register_operand1, memory_operand);
+			break;
+		case "SD":
+			register_operand1 = new Register(operands[0]);
+			memory_operand = new Memory(operands[1]);
+			inst = new SD(register_operand1, memory_operand);
+			break;
 		case "DADD":
 			register_operand1 = new Register(operands[0]);
 			register_operand2 = new Register(operands[1]);
@@ -111,10 +139,11 @@ public class InstructionParser {
 			inst = new ADDD(register_operand1, register_operand2, register_operand3);
 			break;
 		case "MULD":
+		case "MULTD":
 			register_operand1 = new Register(operands[0]);
 			register_operand2 = new Register(operands[1]);
 			register_operand3 = new Register(operands[2]);
-			inst = new MULTD(register_operand1, register_operand2, register_operand3);
+			inst = new MULD(register_operand1, register_operand2, register_operand3);
 			break;
 		case "DIVD":
 			register_operand1 = new Register(operands[0]);
@@ -131,16 +160,6 @@ public class InstructionParser {
 		case "J":
 			inst = new J(operands[0]);
 			break;
-		case "SW": // Store Word
-			register_operand1 = new Register(operands[1]);
-			memory_operand = new Memory(operands[0]);
-			inst = new SW(register_operand1, memory_operand);
-			break;
-		case "SD":
-			register_operand1 = new Register(operands[1]);
-			memory_operand = new Memory(operands[0]);
-			inst = new SD(register_operand1, memory_operand);
-			break;
 		case "BEQ":
 			register_operand1 = new Register(operands[0]);
 			register_operand2 = new Register(operands[1]);
@@ -154,30 +173,11 @@ public class InstructionParser {
 		case "HLT":
 			inst = new HLT();
 			break;
-		case "LW": // Load Word
-			register_operand1 = new Register(operands[0]);
-			memory_operand = new Memory(operands[1]);
-			inst = new LW(register_operand1, memory_operand);
-			break;
-		case "LD": // Load Double
-			register_operand1 = new Register(operands[0]);
-			memory_operand = new Memory(operands[1]);
-			inst = new LD(register_operand1, memory_operand);
-			break;
-		case "LI": // Load Immediate
-			register_operand1 = new Register(operands[0]);
-			immediate_operand = new Immediates(operands[1]);
-			inst = new LI(register_operand1, immediate_operand);
-			break;
-		case "LUI": // Load upper Immediate
-			register_operand1 = new Register(operands[0]);
-			immediate_operand = new Immediates(operands[1]);
-			inst = new LUI(register_operand1, immediate_operand);
-			break;
 		default:
-			throw new Error("Invalid Opcode !");
+			throw new Error("Invalid Opcode: " + opcode);
 		}
-		
+		inst.label = label;
+
 		return inst;
 	}
 }

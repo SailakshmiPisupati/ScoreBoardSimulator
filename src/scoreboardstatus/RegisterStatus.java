@@ -7,10 +7,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import operands.Register;
+import pipelinestages.Issue;
 
 public class RegisterStatus {
 	static HashMap<Register, Double> register_cache = new HashMap<Register, Double>();
-	
+	public static HashMap<String,Boolean> destinationRegisters= new HashMap<String,Boolean>();
 	static double[] integer_registers = new double[32];
 	static double[] floating_point_registers = new double[32];
 
@@ -18,7 +19,30 @@ public class RegisterStatus {
 	static boolean[] integer_register_writing = new boolean[32];
 //	static boolean[] floating_point_register_reading = new boolean[32];
 	static boolean[] floating_point_register_writing = new boolean[32];
-	public static ArrayList<Register> destinationRegisters= new ArrayList<Register>();
+	
+	public static void initializeRegisters() {
+			
+			for(int i=1;i<=32;i++){
+				destinationRegisters.put("R"+i, false);
+		}
+		for(int i=1;i<=32;i++){
+			destinationRegisters.put("F"+i, false);
+		}
+		System.out.println(destinationRegisters);
+	}
+	
+	public static void setDestinationRegisterBusy(String register,boolean value) {
+		System.out.println("Setting register "+register+ " as "+value);
+		destinationRegisters.put(register, value);
+	}
+	
+	public static boolean checkIfRegisterIsBusy(String register){
+		System.out.println("Register "+register+" is "+destinationRegisters.get(register));
+		return destinationRegisters.get(register);
+	}
+	
+	
+	
 	public static boolean getWriteStatus(Register register_operand) throws Exception {
 		if(register_operand.floating_point)
 			return integer_register_writing[register_operand.index-1];
@@ -26,7 +50,7 @@ public class RegisterStatus {
 			return floating_point_register_writing[register_operand.index-1];
 	}
 
-//	public static boolean getReadStatus(RegisterOperand register_operand) throws Exception {
+//	public static boolean getReadStatus(Register register_operand) throws Exception {
 //		if(register_operand.floating_point)
 //			return integer_register_reading[register_operand.index-1];
 //		else
@@ -40,7 +64,7 @@ public class RegisterStatus {
 			floating_point_register_writing[register_operand.index-1] = value;
 	}
 
-//	public static void setReadStatus(RegisterOperand register_operand, boolean value) throws Exception {
+//	public static void setReadStatus(Register register_operand, boolean value) throws Exception {
 //		if(register_operand.floating_point)
 //			integer_register_reading[register_operand.index-1] = value;
 //		else
@@ -80,5 +104,7 @@ public class RegisterStatus {
 	public static void debug() throws Exception {
 		System.out.println("Integer Registers - \n" + Arrays.toString(RegisterStatus.integer_registers));
 		System.out.println("\nFloating Point Registers - \n" + Arrays.toString(RegisterStatus.floating_point_registers));
-	}	
+	}
+
+	
 }

@@ -12,26 +12,31 @@ public class FunctionalUnit {
 	public static boolean checkIfFunctionalUnitIsFree(String functionalUnit) {
 		boolean isFree = false;
 		int free = freeUnits.get(functionalUnit);
-		System.out.println(freeUnits);
-		switch(functionalUnit){
-			case "Load":
-				isFree = Load.getNoOfUnits() == free? true :false;
-				break;
-			case "Integer":
-				isFree = IntegerUnit.getNoOfUnits() == free ? true :false;
-				break;
-			case "Adder":
-				isFree = Adder.getNoOfUnits() == free ? true : false; 
-				break;
-			case "Divider":
-				isFree = Divider.getNoOfUnits() == free ? true :false;
-				break;
-			case "Multiplier":
-				isFree = Multiplier.getNoOfUnits() ==  free ?true :false;
-				break;
+		if(free >0){
+			return true;
+		}else{
+			return false;
 		}
-		
-		return isFree;
+//		System.out.println(freeUnits);
+//		switch(functionalUnit){
+//			case "Load":
+//				isFree = Load.getNoOfUnits() == free? true :false;
+//				break;
+//			case "Integer":
+//				isFree = IntegerUnit.getNoOfUnits() == free ? true :false;
+//				break;
+//			case "Adder":
+//				isFree = Adder.getNoOfUnits() == free ? true : false; 
+//				break;
+//			case "Divider":
+//				isFree = Divider.getNoOfUnits() == free ? true :false;
+//				break;
+//			case "Multiplier":
+//				isFree = Multiplier.getNoOfUnits() ==  free ?true :false;
+//				break;
+//		}
+//		
+//		return isFree;
 	}
 	
 	public static void assignFunctionalUnit(String functionaUnit, int count){

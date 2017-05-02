@@ -12,22 +12,19 @@ public class ScoreBoard {
 	private static final int MAX_CYCLE_COUNT = 40;
 	public static TreeMap<Integer, Instruction> instructions = new TreeMap<Integer, Instruction>();
 	public static HashMap<String, Integer> label_map = new HashMap<String, Integer>();
-	public static int clockCycle =1 ;
+	public static int clockCycle =13 ;
 	public static boolean halt = false;
 
 	/*Passing command line arguments
 	 * inst.txt data.txt config.txt result.txt*/
 	public static void main(String[] args) throws Exception {
-		System.out.println("Simulator starts");
-		
 		InstructionParser.readFile(args[0]);
 		DataParser.readFile(args[1]);
 		ConfigParser.readFile(args[2]);
-		runinstructions();
-		//Register.initialise();
+		runopcodes();
 		
 	}
-	public static void runinstructions() throws Exception {
+	public static void runopcodes() throws Exception {
 				
 		int instruction =1;
 		while(clockCycle < MAX_CYCLE_COUNT){	

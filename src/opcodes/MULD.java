@@ -2,15 +2,17 @@ package opcodes;
 
 import java.util.ArrayList;
 
-import operands.*;
+import operands.Immediates;
+import operands.Memory;
+import operands.Register;
 import scoreboardstatus.RegisterStatus;
 
-public class MULTD extends Instruction{
+public class MULD extends Instruction{
 	Register register_operand1;
 	Register register_operand2;
 	Register register_operand3;
 
-	public MULTD(Register register_operand1, Register register_operand2, Register register_operand3) {
+	public MULD(Register register_operand1, Register register_operand2, Register register_operand3) {
 		super();
 		this.register_operand1 = register_operand1;
 		this.register_operand2 = register_operand2;
@@ -43,13 +45,13 @@ public class MULTD extends Instruction{
 	}
 
 	@Override
-	public Memory getMemoryOperand() throws Exception {
+	public Memory getMemory() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Immediates getImmediateOperand() throws Exception {
+	public Immediates getImmediates() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
