@@ -42,7 +42,7 @@ public class ReadUnit {
 		}else{
 			Execute.executeQueue.add(count);			
 		}
-		Read.readQueue.clear();
+		
 		
 	}
 

@@ -18,8 +18,9 @@ public class WriteUnit {
 	}
 	
 	
-	public static void execute(int count){
+	public static void execute(int count) throws Exception{
 		setWriteBusy(true);
+		Write.releaseResources();
 	}
 	
 

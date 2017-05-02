@@ -39,16 +39,20 @@ public class Write {
 			if(Execute.isexecute){
 				
 			}else{
-				WriteUnit.setWriteBusy(false);
-				Instruction instruction = ScoreBoard.instructions.get(writeexecuted-1);
-				FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (writeexecuted-1));
-				RegisterStatus.setDestinationRegisterBusy(instruction.getDestinationRegister().toString(),false);
-				IssueUnit.setIssueBusy(false);
-				ReadUnit.setReadBusy(false);
-				ExecuteUnit.setIsexecuteBusy(false);
-				FetchUnit.setFetchBusy(false);
-				Issue.issuedInstruction++;
-				Execute.setExecutionCycle(0);
+				if(writeexecuted!=0){
+					Instruction instruction = ScoreBoard.instructions.get(writeexecuted-1);
+					FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (writeexecuted-1));
+					String destinationRegister = instruction.getDestinationRegister().toString();
+					RegisterStatus.setDestinationRegisterBusy(destinationRegister,false);
+					IssueUnit.setIssueBusy(false);
+					ReadUnit.setReadBusy(false);
+					ExecuteUnit.setIsexecuteBusy(false);
+					FetchUnit.setFetchBusy(false);
+					Issue.issuedInstruction++;
+					Execute.setExecutionCycle(0);
+					WriteUnit.setWriteBusy(false);
+				}
+				
 			}
 		}
 	}

@@ -19,17 +19,21 @@ public class Read {
 		
 		if(!ReadUnit.isReadBusy()){
 			if(readQueue.size()!= 0){
-				int startId = readQueue.get(0);
-				Instruction instruction = ScoreBoard.instructions.get(startId);
-				
-				if(areSourcesWritten(instruction)){
-					System.out.println("RAW hazard");
-					FetchUnit.setFetchBusy(false);
-					OutputStatus.appendTo(startId, 6, 1);
-				}else{
-					startId = readQueue.remove(0);
-					ReadUnit.execute(startId);
-					OutputStatus.appendTo(startId, 3, ScoreBoard.clockCycle);
+				for(int i=0;i<readQueue.size();){
+					int startId = readQueue.get(i);
+					Instruction instruction = ScoreBoard.instructions.get(startId);
+					
+					if(areSourcesWritten(instruction)){
+						System.out.println("RAW hazard");
+						FetchUnit.setFetchBusy(false);
+						OutputStatus.appendTo(startId, 6, 1);
+						i++;
+					}else{
+						startId = readQueue.remove(i);
+						ReadUnit.execute(startId);
+						OutputStatus.appendTo(startId, 3, ScoreBoard.clockCycle);
+						break;
+					}
 				}	
 			}		
 		}	
