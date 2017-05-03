@@ -47,6 +47,7 @@ public class Read {
 	private static boolean areSourcesWritten(Instruction instruction) throws Exception {
 		
 		ArrayList<Register> sourceReg = instruction.getSourceRegisters();
+		//if the destination register and source register is the same..then no RAW hazard
 		if(!sourceReg.isEmpty()){
 			for(int i=0;i<sourceReg.size();i++){
 				if(RegisterStatus.checkIfRegisterIsBusy(sourceReg.get(i).toString())){

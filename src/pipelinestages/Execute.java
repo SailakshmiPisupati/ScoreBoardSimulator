@@ -38,7 +38,6 @@ public class Execute {
 					WriteUnit.setWriteBusy(false);
 					isexecute = false;
 				}else{
-					WriteUnit.setWriteBusy(true);
 					isexecute = true;
 				}
 			}
