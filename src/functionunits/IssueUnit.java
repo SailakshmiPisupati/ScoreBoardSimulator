@@ -6,7 +6,9 @@ import opcodes.HLT;
 import opcodes.Instruction;
 import opcodes.J;
 import pipelinestages.Fetch;
+import pipelinestages.Issue;
 import pipelinestages.Read;
+import scoreboardstatus.OutputStatus;
 import scoreboardstatus.RegisterStatus;
 import simulator.ScoreBoard;
 
@@ -14,6 +16,8 @@ public class IssueUnit {
 	
 	public static boolean isIssueBusy;
 	public static String functionalUnit;
+	public static boolean unitAvailable =false;
+	public static boolean wawHazard = false;
 	
 	public static boolean isIssueBusy() {
 		return isIssueBusy;
@@ -23,12 +27,17 @@ public class IssueUnit {
 		IssueUnit.isIssueBusy = isIssueBusy;
 	}
 
-	public static void execute(int count) throws Exception {
+	public static boolean execute(int startId, int issuedInstruction) throws Exception {
 		setIssueBusy(true);
-		Instruction instruction = ScoreBoard.instructions.get(count);	
-		functionalUnit = Instruction.getFunctionalUnit(ScoreBoard.instructions.get(count));	
-		if(FunctionalUnit.checkIfFunctionalUnitIsFree(functionalUnit)){
-			FunctionalUnit.assignFunctionalUnit(functionalUnit, count);
+		Instruction instruction = ScoreBoard.instructions.get(startId);
+		unitAvailable = checkforFunctionalUnit(instruction,startId,issuedInstruction);
+		wawHazard = checkIfWawHazardFound(instruction,startId,issuedInstruction);
+		
+		if(unitAvailable && !wawHazard){
+			FetchUnit.setFetchBusy(false); 					//since the current instruction is being issued, the next set can be fetched.
+			//setting function unit as free and also adding the destination register as busy
+			FunctionalUnit.assignFunctionalUnit(functionalUnit, startId);
+			
 			if(instruction instanceof BNE || instruction instanceof BEQ){
 				ScoreBoard.halt = true;
 				Fetch.setInstructionCount(ScoreBoard.label_map.get(BNE.label));
@@ -38,17 +47,38 @@ public class IssueUnit {
 				Fetch.instructionCount = -1;
 			}else if(instruction instanceof J){
 			}else{
-				Read.readQueue.add(count);
+				Read.readQueue.add(startId);
+				Read.setReadInstruction(issuedInstruction);
 			}
-//			System.out.println(instruction.getDestinationRegister().toString());
-			
-			FetchUnit.setFetchBusy(false);
+			return true;
 		}else{
-			
-			FetchUnit.setFetchBusy(true);
+			return false;
 		}
-		
-		
 	}
 
+	private static boolean checkIfWawHazardFound(Instruction instruction, int startId, int issuedInstruction) throws Exception {
+		if(instruction.getDestinationRegister() != null){
+			if(RegisterStatus.checkIfRegisterIsBusy(instruction.getDestinationRegister().toString())){
+				System.out.println("***********WAW Hazard detected**************");
+				OutputStatus.appendTo(startId, 7, 1);
+				//IssueUnit.setIssueBusy(true);				//stall the issue of next instructions since the Functional unit is not free
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false; 				//since no destination register is present,wawHazard is not found (for J,HLT and BNE,BEQ)
+		}
+	}
+
+	private static boolean checkforFunctionalUnit(Instruction instruction, int startId, int issuedInstruction) {
+		functionalUnit = Instruction.getFunctionalUnit(instruction);
+		if(FunctionalUnit.checkIfFunctionalUnitIsFree(functionalUnit)){
+			return true;
+		}else{
+			OutputStatus.appendTo(startId, 8, 1);
+			//IssueUnit.setIssueBusy(true);				//stall the issue of next instructions since the Functional unit is not free
+			return false;
+		}
+	}
 }

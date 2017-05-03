@@ -75,6 +75,7 @@ public abstract class Instruction {
 		case "BNE":
 		case "BEQ":
 		case "J":
+		case "HLT":
 			return "Integer";
 		case "LD":
 		case "SD":

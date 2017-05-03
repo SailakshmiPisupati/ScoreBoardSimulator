@@ -17,26 +17,6 @@ public class FunctionalUnit {
 		}else{
 			return false;
 		}
-//		System.out.println(freeUnits);
-//		switch(functionalUnit){
-//			case "Load":
-//				isFree = Load.getNoOfUnits() == free? true :false;
-//				break;
-//			case "Integer":
-//				isFree = IntegerUnit.getNoOfUnits() == free ? true :false;
-//				break;
-//			case "Adder":
-//				isFree = Adder.getNoOfUnits() == free ? true : false; 
-//				break;
-//			case "Divider":
-//				isFree = Divider.getNoOfUnits() == free ? true :false;
-//				break;
-//			case "Multiplier":
-//				isFree = Multiplier.getNoOfUnits() ==  free ?true :false;
-//				break;
-//		}
-//		
-//		return isFree;
 	}
 	
 	public static void assignFunctionalUnit(String functionaUnit, int count){
@@ -65,5 +45,4 @@ public class FunctionalUnit {
 		int i = freeUnits.get(functionalUnit);
 		freeUnits.put(functionalUnit,(i+1));
 	}
-
 }

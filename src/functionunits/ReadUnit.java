@@ -8,6 +8,7 @@ import pipelinestages.Execute;
 import pipelinestages.Fetch;
 import pipelinestages.Issue;
 import pipelinestages.Read;
+import scoreboardstatus.OutputStatus;
 import scoreboardstatus.RegisterStatus;
 import simulator.ScoreBoard;
 
@@ -25,10 +26,9 @@ public class ReadUnit {
 	
 	public static void execute(int count) throws Exception{
 		setReadBusy(true);
-		IssueUnit.setIssueBusy(false);
 		Instruction instruction = ScoreBoard.instructions.get(count);
 		String destinationRegister = instruction.getDestinationRegister().toString();
-		RegisterStatus.setDestinationRegisterBusy(instruction.getDestinationRegister().toString(),true);
+		RegisterStatus.setDestinationRegisterBusy(destinationRegister,true);
 		if(instruction instanceof BNE){
 			Issue.setBranchCondition(true);
 			Fetch.setInstructionCount(ScoreBoard.label_map.get(BNE.label)); 

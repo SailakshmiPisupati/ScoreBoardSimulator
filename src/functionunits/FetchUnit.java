@@ -19,8 +19,9 @@ public class FetchUnit {
 		FetchUnit.isFetchBusy = isFetchBusy;
 	}
 	
-	public static void executeFetch(int count){
+	public static void executeFetch(int count, int fetched){
 		setFetchBusy(true);
 		Issue.issueQueue.add(Fetch.fetchQueue.remove(0));
+		Issue.setIssuedInstruction(fetched);
 	}
 }

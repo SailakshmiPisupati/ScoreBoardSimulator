@@ -51,5 +51,6 @@ public class ConfigParser {
 		FunctionalUnit.freeUnits.put("Divider",Divider.getNoOfUnits());
 		FunctionalUnit.freeUnits.put("Integer",IntegerUnit.getNoOfUnits());
 		FunctionalUnit.freeUnits.put("Load",Load.getNoOfUnits());
+//		FunctionalUnit.freeUnits.put("Other",1)
 	}
 }

@@ -13,6 +13,7 @@ import simulator.ScoreBoard;
 public class Fetch{
 
 	public static int instructionCount = 0;
+	public static int fetched =0;
 	public static int getInstructionCount() {
 		return instructionCount;
 	}
@@ -25,9 +26,12 @@ public class Fetch{
 		if(!FetchUnit.isFetchBusy && instructionCount != -1){
 			fetchQueue.add(instructionCount);
 				int startId = OutputStatus.add();
+				
 				OutputStatus.append(startId, 0, instructionCount);
 				OutputStatus.append(startId, 1, ScoreBoard.clockCycle);
-				FetchUnit.executeFetch(instructionCount);
+				
+				FetchUnit.executeFetch(instructionCount,fetched);
+				fetched++;
 				instructionCount++;			
 		}
 	}

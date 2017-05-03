@@ -12,11 +12,17 @@ import functionunits.IssueUnit;
 import functionunits.ReadUnit;
 
 // TODO Hazards to handle - RAW (ensure source registers are not being written)
-
 public class Read {
+	public static boolean rawHazard = false;
 	public static ArrayList<Integer> readQueue = new ArrayList<Integer>();
+	public static int readInstruction = 0;
+	public static int isReadInstruction() {
+		return readInstruction;
+	}
+	public static void setReadInstruction(int readInstruction) {
+		Read.readInstruction = readInstruction;
+	}
 	public static void execute() throws Exception {
-		
 		if(!ReadUnit.isReadBusy()){
 			if(readQueue.size()!= 0){
 				for(int i=0;i<readQueue.size();){
@@ -25,13 +31,13 @@ public class Read {
 					
 					if(areSourcesWritten(instruction)){
 						System.out.println("RAW hazard");
-						FetchUnit.setFetchBusy(false);
 						OutputStatus.appendTo(startId, 6, 1);
 						i++;
 					}else{
 						startId = readQueue.remove(i);
 						ReadUnit.execute(startId);
-						OutputStatus.appendTo(startId, 3, ScoreBoard.clockCycle);
+						IssueUnit.setIssueBusy(false);
+						OutputStatus.append(startId, 3, ScoreBoard.clockCycle);
 						break;
 					}
 				}	
@@ -45,12 +51,14 @@ public class Read {
 			for(int i=0;i<sourceReg.size();i++){
 				if(RegisterStatus.checkIfRegisterIsBusy(sourceReg.get(i).toString())){
 					System.out.println("***********RAW Hazard detected**************");
-					return true;
+					rawHazard = true;
+				}else{
+					rawHazard = false;
 				}
-			}	
+			}
+			return rawHazard;
 		}else{
 			return false;
 		}
-		return false;
 	}
 }

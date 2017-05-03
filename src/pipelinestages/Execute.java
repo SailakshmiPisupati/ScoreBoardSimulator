@@ -31,7 +31,7 @@ public class Execute {
 				executionCycle++;
 				System.out.println("Execution time "+executionTime+ "Execution cycle "+executionCycle);
 				if(executionTime == executionCycle){
-					executionCycle =0;
+					executionCycle = 0;
 					executeQueue.remove(0);
 					ExecuteUnit.execute(id);
 					OutputStatus.append(id,4,ScoreBoard.clockCycle);

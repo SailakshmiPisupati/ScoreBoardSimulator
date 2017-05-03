@@ -1,8 +1,11 @@
 package functionunits;
 
+import opcodes.Instruction;
 import pipelinestages.Execute;
 import pipelinestages.Issue;
 import pipelinestages.Write;
+import scoreboardstatus.OutputStatus;
+import scoreboardstatus.RegisterStatus;
 import simulator.ScoreBoard;
 
 public class WriteUnit {
@@ -18,10 +21,8 @@ public class WriteUnit {
 	}
 	
 	
-	public static void execute(int count) throws Exception{
+	public static void execute(int startId) throws Exception{
 		setWriteBusy(true);
-		Write.releaseResources();
+		//write data to registers.
 	}
-	
-
 }
