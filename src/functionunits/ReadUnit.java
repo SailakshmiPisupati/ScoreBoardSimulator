@@ -24,23 +24,26 @@ public class ReadUnit {
 		ReadUnit.isReadBusy = isReadBusy;
 	}
 	
-	public static void execute(int count) throws Exception{
+	public static void execute(int startId) throws Exception{
 		setReadBusy(true);
-		Instruction instruction = ScoreBoard.instructions.get(count);
-		String destinationRegister = instruction.getDestinationRegister().toString();
-		RegisterStatus.setDestinationRegisterBusy(destinationRegister,true);
+		int newId = Fetch.instructionMapping.get(startId);
+		Instruction instruction = ScoreBoard.instructions.get(newId);
+		
 		if(instruction instanceof BNE){
-			Issue.setBranchCondition(true);
+			//Issue.setBranchCondition(true);
+			ScoreBoard.halt = true;
 			Fetch.setInstructionCount(ScoreBoard.label_map.get(BNE.label)); 
-			int instructioncount = Fetch.getInstructionCount();
-			Fetch.fetchQueue.add(instructioncount);
+			OutputStatus.append(startId, 3, ScoreBoard.clockCycle);
 		}else if(instruction instanceof BEQ){
-			Issue.setBranchCondition(true);
+			//Issue.setBranchCondition(true);
+			ScoreBoard.halt = true;
 			System.out.println(BEQ.label);
 			Fetch.setInstructionCount(ScoreBoard.label_map.get(BEQ.label));
-			Fetch.fetchQueue.add(ScoreBoard.label_map.get(BEQ.label));
+			OutputStatus.append(startId, 3, ScoreBoard.clockCycle);
 		}else{
-			Execute.executeQueue.add(count);			
+			String destinationRegister = instruction.getDestinationRegister().toString();
+			RegisterStatus.setDestinationRegisterBusy(destinationRegister,true);
+			Execute.executeQueue.add(startId);			
 		}
 		
 		

@@ -18,8 +18,14 @@ import simulator.ScoreBoard;
 public class Issue {
 	public static boolean branchCondition = false;
 	public static int issuedInstruction =0;
-	
+	public static int issued =0;
 
+	public static int getIssued() {
+		return issued;
+	}
+	public static void setIssued(int issued) {
+		Issue.issued = issued;
+	}
 	public static int getIssuedInstruction() {
 		return issuedInstruction;
 	}
@@ -40,6 +46,8 @@ public class Issue {
 		if(issueQueue.size()!= 0){
 			for(int i=0;i<issueQueue.size();i++){
 				startId = issueQueue.get(i);
+				int newId = Fetch.instructionMapping.get(startId);
+				System.out.println("newid in issue"+newId);
 				boolean isissued = IssueUnit.execute(startId, issuedInstruction);
 				if(isissued){
 					issueQueue.remove(i);

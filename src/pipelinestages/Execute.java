@@ -12,6 +12,13 @@ import functionunits.WriteUnit;
 
 public class Execute {
 	public static int executionCycle =0;
+	public static int executed =0;
+	public static int getExecuted() {
+		return executed;
+	}
+	public static void setExecuted(int executed) {
+		Execute.executed = executed;
+	}
 	public static int getExecutionCycle() {
 		return executionCycle;
 	}
@@ -25,16 +32,17 @@ public class Execute {
 		if(!ExecuteUnit.isexecuteBusy){
 			if(executeQueue.size()!= 0){
 				
-				int id = executeQueue.get(0);
-				Issue.issuedInstruction = id;
-				int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(id)));
+				int startId = executeQueue.get(0);
+				int newId = Fetch.instructionMapping.get(startId);
+				Issue.issuedInstruction = newId;
+				int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
 				executionCycle++;
 				System.out.println("Execution time "+executionTime+ "Execution cycle "+executionCycle);
 				if(executionTime == executionCycle){
 					executionCycle = 0;
 					executeQueue.remove(0);
-					ExecuteUnit.execute(id);
-					OutputStatus.append(id,4,ScoreBoard.clockCycle);
+					ExecuteUnit.execute(startId);
+					OutputStatus.append(startId,4,ScoreBoard.clockCycle);
 					WriteUnit.setWriteBusy(false);
 					isexecute = false;
 				}else{

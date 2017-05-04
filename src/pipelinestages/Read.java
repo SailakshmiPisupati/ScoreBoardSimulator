@@ -27,7 +27,8 @@ public class Read {
 			if(readQueue.size()!= 0){
 				for(int i=0;i<readQueue.size();){
 					int startId = readQueue.get(i);
-					Instruction instruction = ScoreBoard.instructions.get(startId);
+					int newId = Fetch.instructionMapping.get(startId);
+					Instruction instruction = ScoreBoard.instructions.get(newId);
 					
 					if(areSourcesWritten(instruction)){
 						System.out.println("RAW hazard");
@@ -50,11 +51,14 @@ public class Read {
 		//if the destination register and source register is the same..then no RAW hazard
 		if(!sourceReg.isEmpty()){
 			for(int i=0;i<sourceReg.size();i++){
-				if(RegisterStatus.checkIfRegisterIsBusy(sourceReg.get(i).toString())){
-					System.out.println("***********RAW Hazard detected**************");
-					rawHazard = true;
-				}else{
-					rawHazard = false;
+				if(instruction.getDestinationRegister()!=null){
+					if(!sourceReg.get(i).toString().equals(instruction.getDestinationRegister().toString()))
+						if(RegisterStatus.checkIfRegisterIsBusy(sourceReg.get(i).toString())){
+							System.out.println("***********RAW Hazard detected**************");
+							rawHazard = true;
+						}else{
+							rawHazard = false;
+						}
 				}
 			}
 			return rawHazard;

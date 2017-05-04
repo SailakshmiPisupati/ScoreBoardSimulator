@@ -72,10 +72,6 @@ public abstract class Instruction {
 		case "ANDI":
 		case "OR":
 		case "ORI":
-		case "BNE":
-		case "BEQ":
-		case "J":
-		case "HLT":
 			return "Integer";
 		case "LD":
 		case "SD":
@@ -89,6 +85,11 @@ public abstract class Instruction {
 			return "Multiplier";
 		case "DIVD": 
 			return "Divider";
+		case "BNE":
+		case "BEQ":
+		case "J":
+		case "HLT":
+			return "Other";
 		}
 		return null;
 	}

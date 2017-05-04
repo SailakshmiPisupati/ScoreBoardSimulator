@@ -9,7 +9,7 @@ import pipelinestages.*;
 import scoreboardstatus.OutputStatus;
 
 public class ScoreBoard {
-	private static final int MAX_CYCLE_COUNT = 79;
+	private static final int MAX_CYCLE_COUNT = 100;
 	public static TreeMap<Integer, Instruction> instructions = new TreeMap<Integer, Instruction>();
 	public static HashMap<String, Integer> label_map = new HashMap<String, Integer>();
 	public static int clockCycle =1 ;
