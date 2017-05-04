@@ -33,12 +33,12 @@ public class InstructionParser {
 					operands = tokens[1].replaceAll("\\s+", "").trim().split(",");
 				}	
 				Instruction instruction = createInstruction(opcode, operands, label);
-				
-				ScoreBoard.instructions.put(count++, instruction);
-				
 				if(label != null){
 					ScoreBoard.label_map.put(label, count);
 				}
+				ScoreBoard.instructions.put(count++, instruction);
+				
+				
 				
 			}
 			RegisterStatus.initializeRegisters();

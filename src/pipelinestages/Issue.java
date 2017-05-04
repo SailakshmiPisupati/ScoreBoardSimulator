@@ -48,7 +48,7 @@ public class Issue {
 				startId = issueQueue.get(i);
 				int newId = Fetch.instructionMapping.get(startId);
 				System.out.println("newid in issue"+newId);
-				boolean isissued = IssueUnit.execute(startId, issuedInstruction);
+				boolean isissued = IssueUnit.execute(startId, newId);
 				if(isissued){
 					issueQueue.remove(i);
 					OutputStatus.append(startId, 2, ScoreBoard.clockCycle);

@@ -2,10 +2,13 @@ package pipelinestages;
 
 import java.util.ArrayList;
 
+import opcodes.BEQ;
+import opcodes.BNE;
 import opcodes.Instruction;
 import scoreboardstatus.OutputStatus;
 import simulator.ScoreBoard;
 import functionunits.ExecuteUnit;
+import functionunits.FetchUnit;
 import functionunits.FunctionalUnit;
 import functionunits.ReadUnit;
 import functionunits.WriteUnit;
@@ -27,13 +30,17 @@ public class Execute {
 	}
 	public static boolean isexecute =false;
 	public static ArrayList<Integer> executeQueue = new ArrayList<Integer>();
-	public static void execute() {
+	public static void execute() throws Exception {
 		ReadUnit.setReadBusy(false);
 		if(!ExecuteUnit.isexecuteBusy){
 			if(executeQueue.size()!= 0){
-				
 				int startId = executeQueue.get(0);
 				int newId = Fetch.instructionMapping.get(startId);
+				Instruction instruction = ScoreBoard.instructions.get(newId);
+				if(instruction instanceof BEQ || instruction instanceof BNE){
+					FetchUnit.setFetchBusy(false);
+					executeQueue.remove(0);
+				}
 				Issue.issuedInstruction = newId;
 				int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
 				executionCycle++;

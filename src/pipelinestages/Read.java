@@ -59,6 +59,18 @@ public class Read {
 						}else{
 							rawHazard = false;
 						}
+					else{
+						rawHazard = false;
+					}
+				}else if(instruction.getDestinationRegister()==null){
+					System.out.println("Instruciton is "+instruction);
+					if(RegisterStatus.checkIfRegisterIsBusy(sourceReg.get(i).toString())){
+						System.out.println("***********RAW Hazard detected**************");
+						rawHazard = true;
+					}else{
+						rawHazard = false;
+					}
+					return rawHazard;
 				}
 			}
 			return rawHazard;

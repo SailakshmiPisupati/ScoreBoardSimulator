@@ -30,16 +30,17 @@ public class ReadUnit {
 		Instruction instruction = ScoreBoard.instructions.get(newId);
 		
 		if(instruction instanceof BNE){
-			//Issue.setBranchCondition(true);
+			Issue.setBranchCondition(true);
 			ScoreBoard.halt = true;
+			System.out.println("BNE instruction jumps to "+ScoreBoard.label_map.get(BNE.label));
 			Fetch.setInstructionCount(ScoreBoard.label_map.get(BNE.label)); 
-			OutputStatus.append(startId, 3, ScoreBoard.clockCycle);
+			FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
+			Execute.executeQueue.add(startId);
 		}else if(instruction instanceof BEQ){
-			//Issue.setBranchCondition(true);
+			Issue.setBranchCondition(true);
 			ScoreBoard.halt = true;
-			System.out.println(BEQ.label);
+			FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
 			Fetch.setInstructionCount(ScoreBoard.label_map.get(BEQ.label));
-			OutputStatus.append(startId, 3, ScoreBoard.clockCycle);
 		}else{
 			String destinationRegister = instruction.getDestinationRegister().toString();
 			RegisterStatus.setDestinationRegisterBusy(destinationRegister,true);

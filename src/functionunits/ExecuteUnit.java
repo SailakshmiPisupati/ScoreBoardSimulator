@@ -1,7 +1,9 @@
 package functionunits;
 
+import opcodes.Instruction;
 import pipelinestages.Execute;
 import pipelinestages.Write;
+import simulator.ScoreBoard;
 
 public class ExecuteUnit {
 
@@ -15,8 +17,11 @@ public class ExecuteUnit {
 		ExecuteUnit.isexecuteBusy = isexecuteBusy;
 	}
 	
-	public static void execute(int count){
+	public static void execute(int count) throws Exception{
 		//setIsexecuteBusy(true);
+		Instruction instruction = ScoreBoard.instructions.get(count);
+//		instruction.execute();
+//		instruction.write();
 		Write.writeQueue.add(count);
 	}
 	
