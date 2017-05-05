@@ -41,7 +41,6 @@ public class Write {
 	
 	
 	public static void releaseResources() throws Exception{
-		System.out.println("Inside releasing resources for cycle "+ ScoreBoard.clockCycle);
 		if(WriteUnit.isWriteBusy()||releaseQueue.get(0)<writeexecuted){
 			if(writeexecuted!=-1){
 				for(int i=0;i<releaseQueue.size();i++){

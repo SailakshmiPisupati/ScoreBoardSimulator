@@ -1,6 +1,7 @@
 package functionunits;
 
 import opcodes.Instruction;
+import operands.Register;
 import pipelinestages.Execute;
 import pipelinestages.Issue;
 import pipelinestages.Write;
@@ -23,6 +24,7 @@ public class WriteUnit {
 	
 	public static void execute(int startId) throws Exception{
 		setWriteBusy(true);
+		RegisterStatus.push_cache_to_registers();
 		//write data to registers.
 	}
 }

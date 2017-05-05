@@ -37,7 +37,6 @@ public class Read {
 					}else{
 						startId = readQueue.remove(i);
 						ReadUnit.execute(startId);
-						IssueUnit.setIssueBusy(false);
 						OutputStatus.append(startId, 3, ScoreBoard.clockCycle);
 						break;
 					}

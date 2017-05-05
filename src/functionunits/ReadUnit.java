@@ -30,21 +30,39 @@ public class ReadUnit {
 		Instruction instruction = ScoreBoard.instructions.get(newId);
 		
 		if(instruction instanceof BNE){
-			Issue.setBranchCondition(true);
-			ScoreBoard.halt = true;
-			System.out.println("BNE instruction jumps to "+ScoreBoard.label_map.get(BNE.label));
-			Fetch.setInstructionCount(ScoreBoard.label_map.get(BNE.label)); 
-			FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
-			Execute.executeQueue.add(startId);
+			if(((BNE) instruction).isConditionSatisfied()){
+				//ScoreBoard.halt = true;
+				Fetch.setInstructionCount(ScoreBoard.label_map.get(BNE.label));
+				FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
+				Execute.executeQueue.add(startId);
+				FetchUnit.setFetchBusy(true);
+				IssueUnit.setIssueBusy(true);
+				Issue.issueQueue.clear();
+			}else{
+				FetchUnit.setFetchBusy(false);
+				IssueUnit.setIssueBusy(false);
+			}
 		}else if(instruction instanceof BEQ){
-			Issue.setBranchCondition(true);
-			ScoreBoard.halt = true;
-			FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
-			Fetch.setInstructionCount(ScoreBoard.label_map.get(BEQ.label));
+			if(((BEQ) instruction).isConditionSatisfied()){
+				//ScoreBoard.halt = true;
+				FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
+				Fetch.setInstructionCount(ScoreBoard.label_map.get(BEQ.label));
+				Execute.executeQueue.add(startId);
+				Issue.issueQueue.clear();
+				FetchUnit.setFetchBusy(true);
+				IssueUnit.setIssueBusy(true);
+			}else{
+				FetchUnit.setFetchBusy(false);
+				IssueUnit.setIssueBusy(false);
+			}
+			
+		}else if(instruction instanceof HLT){
+			Fetch.instructionCount = -1;
 		}else{
 			String destinationRegister = instruction.getDestinationRegister().toString();
 			RegisterStatus.setDestinationRegisterBusy(destinationRegister,true);
-			Execute.executeQueue.add(startId);			
+			Execute.executeQueue.add(startId);	
+			IssueUnit.setIssueBusy(false);
 		}
 		
 		

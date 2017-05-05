@@ -42,12 +42,11 @@ public class Issue {
 	
 	public static void execute() throws Exception {
 		int startId =0;
-		
+		System.out.println("issued instructions "+issueQueue);
 		if(issueQueue.size()!= 0){
 			for(int i=0;i<issueQueue.size();i++){
 				startId = issueQueue.get(i);
 				int newId = Fetch.instructionMapping.get(startId);
-				System.out.println("newid in issue"+newId);
 				boolean isissued = IssueUnit.execute(startId, newId);
 				if(isissued){
 					issueQueue.remove(i);

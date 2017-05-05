@@ -29,7 +29,6 @@ public class IssueUnit {
 
 	public static boolean execute(int startId, int issuedInstruction) throws Exception {
 		setIssueBusy(true);
-		System.out.println("Issueunit execute "+startId+issuedInstruction);
 		int newId = Fetch.instructionMapping.get(startId);
 		Instruction instruction = ScoreBoard.instructions.get(newId);
 		unitAvailable = checkforFunctionalUnit(instruction,startId,issuedInstruction);
@@ -37,20 +36,14 @@ public class IssueUnit {
 		
 		if(unitAvailable && !wawHazard){
 			FetchUnit.setFetchBusy(false); 					//since the current instruction is being issued, the next set can be fetched.
-			//setting function unit as free and also adding the destination register as busy
 			FunctionalUnit.assignFunctionalUnit(functionalUnit, startId);
-			//Read.readQueue.add(startId);
-			if(instruction instanceof BNE){
-				ScoreBoard.halt = true;
+			
+			if(instruction instanceof BNE || instruction instanceof BEQ){
 				Read.readQueue.add(startId);
-				FetchUnit.setFetchBusy(true);
-			}else if(instruction instanceof BEQ){
-				ScoreBoard.halt = true;
-				Read.readQueue.add(startId);
-				FetchUnit.setFetchBusy(true);
-			}
-			else if(instruction instanceof HLT){ // in order to stop the loop
-				ScoreBoard.halt = true;
+//				FetchUnit.setFetchBusy(true);
+//				IssueUnit.setIssueBusy(true);
+			}else if(instruction instanceof HLT){ // in order to stop the loop
+				FetchUnit.setFetchBusy(false);
 				Fetch.instructionCount = -1;
 			}else if(instruction instanceof J){
 			}else{
@@ -72,6 +65,8 @@ public class IssueUnit {
 			}else{
 				return false;
 			}
+		}else if(instruction instanceof HLT||instruction instanceof BNE||instruction instanceof BEQ||instruction instanceof J){
+			return false;
 		}else{
 			return false; 				//since no destination register is present,wawHazard is not found (for J,HLT and BNE,BEQ)
 		}
@@ -80,6 +75,8 @@ public class IssueUnit {
 	private static boolean checkforFunctionalUnit(Instruction instruction, int startId, int issuedInstruction) {
 		functionalUnit = Instruction.getFunctionalUnit(instruction);
 		if(FunctionalUnit.checkIfFunctionalUnitIsFree(functionalUnit)){
+			return true;
+		}else if(instruction instanceof HLT||instruction instanceof BNE){
 			return true;
 		}else{
 			OutputStatus.appendTo(startId, 8, 1);

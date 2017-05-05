@@ -25,16 +25,12 @@ public class Fetch{
 	}
 	public static ArrayList<Integer> fetchQueue = new ArrayList<Integer>();
 	public static void execute() {
-		
+		System.out.println("fetch "+FetchUnit.isFetchBusy);
 		if(!FetchUnit.isFetchBusy && instructionCount != -1){
-			//fetchQueue.add(instructionCount);
 				int startId = OutputStatus.add();
-				//int id = fetchQueue.remove(0);
 				instructionMapping.put(instructionsFetched, instructionCount);
 				OutputStatus.append(instructionsFetched, 0, instructionCount);
 				OutputStatus.append(instructionsFetched, 1, ScoreBoard.clockCycle);
-				
-				System.out.println(instructionMapping);
 				FetchUnit.executeFetch(instructionsFetched);
 				instructionsFetched++;
 				instructionCount++;			

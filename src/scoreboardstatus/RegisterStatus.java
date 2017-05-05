@@ -15,11 +15,9 @@ public class RegisterStatus {
 	static double[] integer_registers = new double[32];
 	static double[] floating_point_registers = new double[32];
 
-//	static boolean[] integer_register_reading = new boolean[32];
-	static boolean[] integer_register_writing = new boolean[32];
-//	static boolean[] floating_point_register_reading = new boolean[32];
-	static boolean[] floating_point_register_writing = new boolean[32];
-	
+//	static boolean[] integer_register_writing = new boolean[32];
+//	static boolean[] floating_point_register_writing = new boolean[32];
+//	
 	public static void initializeRegisters() {
 			
 			for(int i=1;i<=32;i++){
@@ -28,27 +26,24 @@ public class RegisterStatus {
 		for(int i=1;i<=32;i++){
 			destinationRegisters.put("F"+i, false);
 		}
-		System.out.println(destinationRegisters);
 	}
 	
 	public static void setDestinationRegisterBusy(String register,boolean value) {
-		System.out.println("Setting register "+register+ " as "+value);
 		destinationRegisters.put(register, value);
 	}
 	
 	public static boolean checkIfRegisterIsBusy(String register){
-		System.out.println("Register "+register+" is "+destinationRegisters.get(register));
 		return destinationRegisters.get(register);
 	}
 	
 	
 	
-	public static boolean getWriteStatus(Register register_operand) throws Exception {
-		if(register_operand.floating_point)
-			return integer_register_writing[register_operand.index-1];
-		else
-			return floating_point_register_writing[register_operand.index-1];
-	}
+//	public static boolean getWriteStatus(Register register_operand) throws Exception {
+//		if(register_operand.floating_point)
+//			return integer_register_writing[register_operand.index-1];
+//		else
+//			return floating_point_register_writing[register_operand.index-1];
+//	}
 
 //	public static boolean getReadStatus(Register register_operand) throws Exception {
 //		if(register_operand.floating_point)
@@ -56,13 +51,13 @@ public class RegisterStatus {
 //		else
 //			return floating_point_register_reading[register_operand.index-1];			
 //	}
-
-	public static void setWriteStatus(Register register_operand, boolean value) throws Exception {
-		if(register_operand.floating_point)
-			integer_register_writing[register_operand.index-1] = value;
-		else
-			floating_point_register_writing[register_operand.index-1] = value;
-	}
+//
+//	public static void setWriteStatus(Register register_operand, boolean value) throws Exception {
+//		if(register_operand.floating_point)
+//			integer_register_writing[register_operand.index-1] = value;
+//		else
+//			floating_point_register_writing[register_operand.index-1] = value;
+//	}
 
 //	public static void setReadStatus(Register register_operand, boolean value) throws Exception {
 //		if(register_operand.floating_point)
@@ -81,6 +76,7 @@ public class RegisterStatus {
 
 	public static void write(Register register_operand, Double value) throws Exception {
 		register_cache.put(register_operand, value);
+		System.out.println("Register cache "+register_cache);
 	}
 	
 	public static void push_cache_to_registers() throws Exception {

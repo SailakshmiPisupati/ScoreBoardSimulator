@@ -40,21 +40,23 @@ public class Execute {
 				if(instruction instanceof BEQ || instruction instanceof BNE){
 					FetchUnit.setFetchBusy(false);
 					executeQueue.remove(0);
-				}
-				Issue.issuedInstruction = newId;
-				int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
-				executionCycle++;
-				System.out.println("Execution time "+executionTime+ "Execution cycle "+executionCycle);
-				if(executionTime == executionCycle){
-					executionCycle = 0;
-					executeQueue.remove(0);
-					ExecuteUnit.execute(startId);
-					OutputStatus.append(startId,4,ScoreBoard.clockCycle);
-					WriteUnit.setWriteBusy(false);
-					isexecute = false;
 				}else{
-					isexecute = true;
+					Issue.issuedInstruction = newId;
+					int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
+					executionCycle++;
+					System.out.println("Execution time "+executionTime+ "Execution cycle "+executionCycle);
+					if(executionTime == executionCycle){
+						executionCycle = 0;
+						executeQueue.remove(0);
+						ExecuteUnit.execute(newId,startId);
+						OutputStatus.append(startId,4,ScoreBoard.clockCycle);
+						WriteUnit.setWriteBusy(false);
+						isexecute = false;
+					}else{
+						isexecute = true;
+					}
 				}
+				
 			}
 		}	
 	}

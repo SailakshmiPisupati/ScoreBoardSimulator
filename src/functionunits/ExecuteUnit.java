@@ -17,12 +17,13 @@ public class ExecuteUnit {
 		ExecuteUnit.isexecuteBusy = isexecuteBusy;
 	}
 	
-	public static void execute(int count) throws Exception{
+	public static void execute(int count,int startId) throws Exception{
 		//setIsexecuteBusy(true);
 		Instruction instruction = ScoreBoard.instructions.get(count);
-//		instruction.execute();
-//		instruction.write();
-		Write.writeQueue.add(count);
+		System.out.println("count is "+count+ "instruciton"+instruction);
+		instruction.execute();
+		instruction.write();
+		Write.writeQueue.add(startId);
 	}
 	
 }
