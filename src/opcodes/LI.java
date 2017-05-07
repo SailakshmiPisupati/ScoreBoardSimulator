@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import operands.*;
 
 public class LI extends Instruction{
-	Register register_operand;
-	Immediates immediate_operand;
+	Register registerOperand;
+	Immediates immediateOperand;
 	
 	public LI(Register ro, Immediates io) {
-		this.register_operand = ro;
-		this.immediate_operand = io;
+		this.registerOperand = ro;
+		this.immediateOperand = io;
 	}
 
 	@Override
-	public void write() throws Exception {
-		register_operand.setValue(immediate_operand.value);
+	public void writeToRegister() throws Exception {
+		System.out.println("Immediate operand "+immediateOperand.getValue());
+		registerOperand.setValue(immediateOperand.getValue());
+		System.out.println("Register value "+registerOperand.getValue());
 	}
 
 	@Override
@@ -25,13 +27,13 @@ public class LI extends Instruction{
 
 	@Override
 	public Register getDestinationRegister() throws Exception {
-		return this.register_operand;
+		return this.registerOperand;
 	}
 
 	@Override
 	public ArrayList<Register> getSourceRegisters() throws Exception {
-		ArrayList<Register> source_registers = new ArrayList<Register>();
-		return source_registers;
+		ArrayList<Register> sourceRegisterList = new ArrayList<Register>();
+		return sourceRegisterList;
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class LI extends Instruction{
 
 	@Override
 	public Immediates getImmediates() throws Exception {
-		return this.immediate_operand;
+		return this.immediateOperand;
 	}
 
 }

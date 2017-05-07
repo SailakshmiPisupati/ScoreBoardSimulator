@@ -27,12 +27,12 @@ public class J extends Instruction{
 
 	@Override
 	public ArrayList<Register> getSourceRegisters() throws Exception {
-		ArrayList<Register> source_registers = new ArrayList<Register>();
-		return source_registers;
+		ArrayList<Register> sourceRegisterList = new ArrayList<Register>();
+		return sourceRegisterList;
 	}
 
 	@Override
-	public void write() throws Exception {
+	public void writeToRegister() throws Exception {
 		// TODO Auto-generated method stub
 		
 	}

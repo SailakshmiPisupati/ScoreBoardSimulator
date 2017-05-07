@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.LineNumberReader;
 import java.util.HashMap;
 
+import cache.ICache;
 import functionunits.Adder;
 import functionunits.Divider;
 import functionunits.FunctionalUnit;
@@ -40,17 +41,15 @@ public class ConfigParser {
 					Divider.setNoOfUnits(Integer.parseInt(functionalUnit[0].trim()));
 					Divider.setExecutionCycle(Integer.parseInt(functionalUnit[1].trim()));
 					break;
+				case "I-CACHE":
+					ICache.setNumberOfBlocks(Integer.parseInt(functionalUnit[0].trim()));
+					ICache.setBlockSize(Integer.parseInt(functionalUnit[1].trim()));
+					break;
 			}	
 			count++;
 		}
-		initializeFunctionalUnits();
+		FunctionalUnit.initializeFunctionalUnits();
+		ICache.initializeICache();
 	}	
-	public static void initializeFunctionalUnits(){
-		FunctionalUnit.freeUnits.put("Adder",Adder.getNoOfUnits());
-		FunctionalUnit.freeUnits.put("Multiplier",Multiplier.getNoOfUnits());
-		FunctionalUnit.freeUnits.put("Divider",Divider.getNoOfUnits());
-		FunctionalUnit.freeUnits.put("Integer",IntegerUnit.getNoOfUnits());
-		FunctionalUnit.freeUnits.put("Load",Load.getNoOfUnits());
-		FunctionalUnit.freeUnits.put("Other",1);
-	}
+	
 }

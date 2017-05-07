@@ -41,10 +41,10 @@ public class IssueUnit {
 			if(instruction instanceof BNE || instruction instanceof BEQ){
 				Read.readQueue.add(startId);
 //				FetchUnit.setFetchBusy(true);
-//				IssueUnit.setIssueBusy(true);
+				IssueUnit.setIssueBusy(true);
 			}else if(instruction instanceof HLT){ // in order to stop the loop
-				FetchUnit.setFetchBusy(false);
-				Fetch.instructionCount = -1;
+//				FetchUnit.setFetchBusy(false);
+				Fetch.setInstructionCount(-1); 
 			}else if(instruction instanceof J){
 			}else{
 				Read.readQueue.add(startId);

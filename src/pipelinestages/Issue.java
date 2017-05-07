@@ -42,7 +42,6 @@ public class Issue {
 	
 	public static void execute() throws Exception {
 		int startId =0;
-		System.out.println("issued instructions "+issueQueue);
 		if(issueQueue.size()!= 0){
 			for(int i=0;i<issueQueue.size();i++){
 				startId = issueQueue.get(i);

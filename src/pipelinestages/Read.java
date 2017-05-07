@@ -2,6 +2,7 @@ package pipelinestages;
 
 import java.util.ArrayList;
 
+import opcodes.BNE;
 import opcodes.Instruction;
 import operands.Register;
 import scoreboardstatus.OutputStatus;
@@ -39,6 +40,10 @@ public class Read {
 						ReadUnit.execute(startId);
 						OutputStatus.append(startId, 3, ScoreBoard.clockCycle);
 						break;
+					}
+					
+					if(instruction instanceof BNE){
+						IssueUnit.setIssueBusy(true);
 					}
 				}	
 			}		

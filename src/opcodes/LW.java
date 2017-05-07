@@ -7,12 +7,12 @@ import scoreboardstatus.MemoryStatus;
 import scoreboardstatus.RegisterStatus;
 
 public class LW extends Instruction{
-	Register register_operand;
-	Memory memory_operand;
+	Register registerOperand;
+	Memory memoryOperand;
 
 	public LW(Register ro, Memory mo) {
-		this.register_operand = ro;
-		this.memory_operand = mo;
+		this.registerOperand = ro;
+		this.memoryOperand = mo;
 	}
 
 	@Override
@@ -21,27 +21,27 @@ public class LW extends Instruction{
 	}
 
 	@Override
-	public void write() throws Exception {
-		double value = MemoryStatus.read(memory_operand.final_address(), "word");
-		register_operand.setValue(value);
-		RegisterStatus.write(register_operand, value);
+	public void writeToRegister() throws Exception {
+		double value = MemoryStatus.readFromMemory(memoryOperand.calculateOffset(), "word");
+		registerOperand.setValue(value);
+		RegisterStatus.write(registerOperand, value);
 	}
 
 	@Override
 	public Register getDestinationRegister() throws Exception {
-		return this.register_operand;
+		return this.registerOperand;
 	}
 
 	@Override
 	public ArrayList<Register> getSourceRegisters() throws Exception {
-		ArrayList<Register> source_registers = new ArrayList<Register>();
-		if(memory_operand.base_register != null) source_registers.add(memory_operand.base_register);
-		return source_registers;
+		ArrayList<Register> sourceRegisterList = new ArrayList<Register>();
+		if(memoryOperand.baseRegister != null) sourceRegisterList.add(memoryOperand.baseRegister);
+		return sourceRegisterList;
 	}
 
 	@Override
 	public Memory getMemory() throws Exception {
-		return this.memory_operand;
+		return this.memoryOperand;
 	}
 
 	@Override

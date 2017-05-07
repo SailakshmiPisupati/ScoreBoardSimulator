@@ -11,11 +11,11 @@ import operands.*;
 
 public abstract class Instruction {
 	public abstract void execute() throws Exception;
-	public abstract void write() throws Exception;
+	public abstract void writeToRegister() throws Exception;
 	public abstract Register getDestinationRegister() throws Exception;
+	public abstract Immediates getImmediates() throws Exception;
 	public abstract ArrayList<Register> getSourceRegisters() throws Exception;
 	public abstract Memory getMemory() throws Exception;
-	public abstract Immediates getImmediates() throws Exception;
 	public String label;
 
 	@Override
@@ -37,28 +37,6 @@ public abstract class Instruction {
 		return null;
 	}
 
-//	public void markDestinationRegisterStatus(int value) throws Exception{
-//		if(this.getDestinationRegister() != null) this.getDestinationRegister().setWriteStatus(value);
-//	}
-//
-//	public void unMarkRegisterStatus() throws Exception{
-//		Register destination_operand = this.getDestinationRegister();
-//		if(destination_operand != null) destination_operand.setWriteStatus(0);
-//	}
-//
-//	public boolean isDestinationBeingWritten(int gid) throws Exception{
-//		Register destination_operand = this.getDestinationRegister();
-//		if(destination_operand != null) return destination_operand.isBeingWritten(gid);
-//		return false;
-//	}
-//
-//	public boolean areSourcesBeingWritten(int gid) throws Exception{
-//		for (Register source_operand: this.getSourceRegisters()) {
-//			if(source_operand.isBeingWritten(gid)) return true;
-//		}
-//		return false;
-//	}
-//	
 	public static String getFunctionalUnit(Instruction instruction){
 		
 		switch(instruction.getClass().getSimpleName()){

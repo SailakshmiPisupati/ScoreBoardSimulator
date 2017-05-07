@@ -30,9 +30,9 @@ public class ReadUnit {
 		Instruction instruction = ScoreBoard.instructions.get(newId);
 		
 		if(instruction instanceof BNE){
-			if(((BNE) instruction).isConditionSatisfied()){
+			if(((BNE) instruction).checkBranchCondition()){
 				//ScoreBoard.halt = true;
-				Fetch.setInstructionCount(ScoreBoard.label_map.get(BNE.label));
+				Fetch.setInstructionCount(ScoreBoard.labelLocation.get(BNE.label));
 				FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
 				Execute.executeQueue.add(startId);
 				FetchUnit.setFetchBusy(true);
@@ -43,10 +43,10 @@ public class ReadUnit {
 				IssueUnit.setIssueBusy(false);
 			}
 		}else if(instruction instanceof BEQ){
-			if(((BEQ) instruction).isConditionSatisfied()){
+			if(((BEQ) instruction).checkBranchCondition()){
 				//ScoreBoard.halt = true;
 				FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
-				Fetch.setInstructionCount(ScoreBoard.label_map.get(BEQ.label));
+				Fetch.setInstructionCount(ScoreBoard.labelLocation.get(BEQ.label));
 				Execute.executeQueue.add(startId);
 				Issue.issueQueue.clear();
 				FetchUnit.setFetchBusy(true);

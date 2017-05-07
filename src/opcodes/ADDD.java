@@ -8,52 +8,49 @@ import operands.Register;
 import scoreboardstatus.RegisterStatus;
 
 public class ADDD extends Instruction{
-	Register register_operand1; // destination
-	Register register_operand2; // source 1
-	Register register_operand3; // source 2
+	Register destinationRegister;
+	Register sourceRegister1;
+	Register sourceRegister2;
 			
-	public ADDD(Register register_operand1, Register register_operand2, Register register_operand3) {
+	public ADDD(Register destinationRegister, Register sourceRegister1, Register sourceRegister2) {
 		super();
-		this.register_operand1 = register_operand1;
-		this.register_operand2 = register_operand2;
-		this.register_operand3 = register_operand3;
+		this.destinationRegister = destinationRegister;
+		this.sourceRegister1 = sourceRegister1;
+		this.sourceRegister2 = sourceRegister2;
 	}
 	
 	@Override
-	public void execute() throws Exception {
-		double value = RegisterStatus.read(this.register_operand2) + RegisterStatus.read(this.register_operand3);
-		RegisterStatus.write(this.register_operand1, value);
+	public ArrayList<Register> getSourceRegisters() throws Exception {
+		ArrayList<Register> sourceRegisterList = new ArrayList<Register>();
+		sourceRegisterList.add(this.sourceRegister1);
+		sourceRegisterList.add(this.sourceRegister2);
+		return sourceRegisterList;
 	}
 
 	@Override
 	public Register getDestinationRegister() throws Exception {
-		return this.register_operand1;
+		return this.destinationRegister;
 	}
 
 	@Override
-	public ArrayList<Register> getSourceRegisters() throws Exception {
-		ArrayList<Register> source_registers = new ArrayList<Register>();
-		source_registers.add(this.register_operand2);
-		source_registers.add(this.register_operand3);
-		return source_registers;
+	public Immediates getImmediates() throws Exception {
+		return null;
 	}
 
 	@Override
-	public void write() throws Exception {
-		// TODO Auto-generated method stub
+	public void writeToRegister() throws Exception {
 		
 	}
 
 	@Override
 	public Memory getMemory() throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Immediates getImmediates() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public void execute() throws Exception {
+		double value = RegisterStatus.read(this.sourceRegister1) + RegisterStatus.read(this.sourceRegister2);
+		RegisterStatus.write(this.destinationRegister, value);
 	}
 
 }

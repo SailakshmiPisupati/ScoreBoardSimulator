@@ -6,17 +6,17 @@ import operands.*;
 import scoreboardstatus.MemoryStatus;
 
 public class SD extends Instruction{
-	Register register_operand;
-	Memory memory_operand;
+	Register registerOperand;
+	Memory memoryOperand;
 
 	public SD(Register ro, Memory mo) {
-		this.register_operand = ro;
-		this.memory_operand = mo;
+		this.registerOperand = ro;
+		this.memoryOperand = mo;
 	}
 
 	@Override
-	public void write() throws Exception {
-		MemoryStatus.write(memory_operand.final_address(), "double", (int) register_operand.getValue());
+	public void writeToRegister() throws Exception {
+		MemoryStatus.writeToMemory(memoryOperand.calculateOffset(), "double", (int) registerOperand.getValue());
 	}
 
 	@Override
@@ -31,15 +31,15 @@ public class SD extends Instruction{
 
 	@Override
 	public ArrayList<Register> getSourceRegisters() throws Exception {
-		ArrayList<Register> source_registers = new ArrayList<Register>();
-		source_registers.add(register_operand);
-		if(memory_operand.base_register != null) source_registers.add(memory_operand.base_register);
-		return source_registers;
+		ArrayList<Register> sourceRegisterList = new ArrayList<Register>();
+		sourceRegisterList.add(registerOperand);
+		if(memoryOperand.baseRegister != null) sourceRegisterList.add(memoryOperand.baseRegister);
+		return sourceRegisterList;
 	}
 
 	@Override
 	public Memory getMemory() throws Exception {
-		return this.memory_operand;
+		return this.memoryOperand;
 	}
 
 	@Override

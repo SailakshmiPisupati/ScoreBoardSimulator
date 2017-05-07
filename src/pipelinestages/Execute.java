@@ -44,7 +44,6 @@ public class Execute {
 					Issue.issuedInstruction = newId;
 					int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
 					executionCycle++;
-					System.out.println("Execution time "+executionTime+ "Execution cycle "+executionCycle);
 					if(executionTime == executionCycle){
 						executionCycle = 0;
 						executeQueue.remove(0);

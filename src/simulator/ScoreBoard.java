@@ -3,16 +3,17 @@ package simulator;
 import java.util.HashMap;
 import java.util.TreeMap;
 
+import cache.ICache;
 import opcodes.Instruction;
 import parser.*;
 import pipelinestages.*;
 import scoreboardstatus.OutputStatus;
 
 public class ScoreBoard {
-	private static final int MAX_CYCLE_COUNT = 140;
+	private static final int MAX_CYCLE_COUNT = 200;
 	public static TreeMap<Integer, Instruction> instructions = new TreeMap<Integer, Instruction>();
-	public static HashMap<String, Integer> label_map = new HashMap<String, Integer>();
-	public static int clockCycle =1 ;
+	public static HashMap<String, Integer> labelLocation = new HashMap<String, Integer>();
+	public static int clockCycle = 1 ;
 	public static boolean halt = false;
 
 	/*Passing command line arguments
@@ -21,10 +22,10 @@ public class ScoreBoard {
 		InstructionParser.readFile(args[0]);
 		DataParser.readFile(args[1]);
 		ConfigParser.readFile(args[2]);
-		runopcodes();
+		runScoreBoard();
 		
 	}
-	public static void runopcodes() throws Exception {
+	public static void runScoreBoard() throws Exception {
 				
 		int instruction =1;
 		while(clockCycle < MAX_CYCLE_COUNT){	
@@ -34,18 +35,15 @@ public class ScoreBoard {
 			Issue.execute();
 			Fetch.execute();
 			OutputStatus.printResults();
-			if(to_stop()) break;							
+			OutputStatus.writeToOutputFile();
+			//if(stopScoreBoard()) break;							
 			clockCycle++;
 			instruction++;
 		}
 		
 	}
 	
-	private static boolean all_units_stopped() {
-		return Write.writeQueue.isEmpty()&& Read.readQueue.isEmpty() && Fetch.fetchQueue.isEmpty() && Issue.issueQueue.isEmpty() && Execute.executeQueue.isEmpty();
-	}
-	private static boolean to_stop() {
-		if(!halt) return false;
-		return all_units_stopped();
-	}
+//	public static boolean stopScoreBoard(){
+//		
+//	}
 }

@@ -6,13 +6,13 @@ public class Register extends Operand {
 	public boolean floating_point;
 	public int index;
 
-	public Register(String register_name) throws Exception {
+	public Register(String register) throws Exception {
 		super();
 
-		if(!isValidRegister(register_name)) throw new Error("Invalid Register name - " + register_name);
+		if(!isValidRegister(register)) throw new Error("Invalid Register name - " + register);
 
-		this.floating_point = (register_name.charAt(0) == 'R') ? false : true;
-		this.index = getIndex(register_name);
+		this.floating_point = (register.charAt(0) == 'R') ? false : true;
+		this.index = getIndex(register);
 	}
 
 	public double getValue() throws Exception {
@@ -34,13 +34,13 @@ public class Register extends Operand {
 //		RegisterStatus.setWriteStatus(this, value);
 //	}
 
-	private static int getIndex(String register_name) throws Exception {
-		return Integer.parseInt(register_name.substring(1,register_name.length()));
+	private static int getIndex(String register) throws Exception {
+		return Integer.parseInt(register.substring(1,register.length()));
 	}
 
-	public static boolean isValidRegister(String register_name) throws Exception {
-		if(register_name.matches("[F|R]\\d+")){
-			int index = getIndex(register_name);
+	public static boolean isValidRegister(String register) throws Exception {
+		if(register.matches("[F|R]\\d+")){
+			int index = getIndex(register);
 
 			if(1 <= index && index <= 32){
 				return true;
@@ -56,4 +56,5 @@ public class Register extends Operand {
 	public String toString() {
 		return (floating_point == true ? "F" : "R") + "" + index;
 	}
+
 }

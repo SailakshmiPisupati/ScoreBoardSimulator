@@ -45,4 +45,12 @@ public class FunctionalUnit {
 		int i = freeUnits.get(functionalUnit);
 		freeUnits.put(functionalUnit,(i+1));
 	}
+	public static void initializeFunctionalUnits(){
+		FunctionalUnit.freeUnits.put("Adder",Adder.getNoOfUnits());
+		FunctionalUnit.freeUnits.put("Multiplier",Multiplier.getNoOfUnits());
+		FunctionalUnit.freeUnits.put("Divider",Divider.getNoOfUnits());
+		FunctionalUnit.freeUnits.put("Integer",IntegerUnit.getNoOfUnits());
+		FunctionalUnit.freeUnits.put("Load",Load.getNoOfUnits());
+		FunctionalUnit.freeUnits.put("Other",1);
+	}
 }

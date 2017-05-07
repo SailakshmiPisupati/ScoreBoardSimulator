@@ -1,9 +1,9 @@
 package operands;
 
 public class Memory {
-	int base_address;
-	public Register base_register;
-	int offset_address;
+	int baseAddress;
+	public Register baseRegister;
+	int offsetAddress;
 	int value;
 
 	public Memory(String str) throws Exception {
@@ -11,29 +11,30 @@ public class Memory {
 
 		if(str.contains("(")){
 			String offset = str.substring(0, str.indexOf("("));
-			this.offset_address = Integer.parseInt(offset);
+			this.offsetAddress = Integer.parseInt(offset);
 			String base = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
 
 			if(Register.isValidRegister(base)){
-				this.base_register = new Register(base);
+				this.baseRegister = new Register(base);
 			}else{
-				this.base_address = Integer.parseInt(base);
+				this.baseAddress = Integer.parseInt(base);
 			}
 		}else{
-			this.base_address = Integer.parseInt(str);
+			this.baseAddress = Integer.parseInt(str);
 		}
 	}
 
-	public int final_address() throws Exception {
-		if(this.base_register != null){
-			return (int)this.base_register.getValue() + this.offset_address;
+	public int calculateOffset() throws Exception {
+		System.out.println("base resigiter "+baseRegister.getValue());
+		if(this.baseRegister != null){
+			return (int)this.baseRegister.getValue() + this.offsetAddress;
 		}else{
-			return this.base_address + this.offset_address;
+			return this.baseAddress + this.offsetAddress;
 		}
 	}
 
 	@Override
 	public String toString() {
-		return offset_address + "(" + base_register + ")";
+		return offsetAddress + "(" + baseRegister + ")";
 	}
 }

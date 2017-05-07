@@ -20,9 +20,8 @@ public class ExecuteUnit {
 	public static void execute(int count,int startId) throws Exception{
 		//setIsexecuteBusy(true);
 		Instruction instruction = ScoreBoard.instructions.get(count);
-		System.out.println("count is "+count+ "instruciton"+instruction);
 		instruction.execute();
-		instruction.write();
+		instruction.writeToRegister();
 		Write.writeQueue.add(startId);
 	}
 	

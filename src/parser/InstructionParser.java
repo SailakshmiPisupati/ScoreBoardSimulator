@@ -33,13 +33,11 @@ public class InstructionParser {
 					operands = tokens[1].replaceAll("\\s+", "").trim().split(",");
 				}	
 				Instruction instruction = createInstruction(opcode, operands, label);
+				
 				if(label != null){
-					ScoreBoard.label_map.put(label, count);
+					ScoreBoard.labelLocation.put(label, count);
 				}
 				ScoreBoard.instructions.put(count++, instruction);
-				
-				
-				
 			}
 			RegisterStatus.initializeRegisters();
 		}catch(IOException e){
@@ -48,136 +46,136 @@ public class InstructionParser {
 	}
 	
 	private static Instruction createInstruction(String opcode, String[] operands, String label) throws Exception {
-		Instruction inst = null;
-		Immediates immediate_operand = null;
-		Memory memory_operand = null;
-		Register register_operand1 = null, register_operand2 = null, register_operand3 = null;
+		Instruction instruction = null;
+		Immediates immediateOperand = null;
+		Memory memoryOperand = null;
+		Register destinationRegister = null, sourceRegister1 = null, sourceRegister2 = null;
 
 		switch(opcode){
-		case "LW": // Load Word
-			register_operand1 = new Register(operands[0]);
-			memory_operand = new Memory(operands[1]);
-			inst = new LW(register_operand1, memory_operand);
+		case "LW":
+			destinationRegister = new Register(operands[0]);
+			memoryOperand = new Memory(operands[1]);
+			instruction = new LW(destinationRegister, memoryOperand);
 			break;
-		case "LD": // Load Double
-			register_operand1 = new Register(operands[0]);
-			memory_operand = new Memory(operands[1]);
-			inst = new LD(register_operand1, memory_operand);
+		case "LD":
+			destinationRegister = new Register(operands[0]);
+			memoryOperand = new Memory(operands[1]);
+			instruction = new LD(destinationRegister, memoryOperand);
 			break;
-		case "LI": // Load Immediate
-			register_operand1 = new Register(operands[0]);
-			immediate_operand = new Immediates(operands[1]);
-			inst = new LI(register_operand1, immediate_operand);
+		case "LI":
+			destinationRegister = new Register(operands[0]);
+			immediateOperand = new Immediates(operands[1]);
+			instruction = new LI(destinationRegister, immediateOperand);
 			break;
 		case "LUI": // Load upper Immediate
-			register_operand1 = new Register(operands[0]);
-			immediate_operand = new Immediates(operands[1]);
-			inst = new LUI(register_operand1, immediate_operand);
+			destinationRegister = new Register(operands[0]);
+			immediateOperand = new Immediates(operands[1]);
+			instruction = new LUI(destinationRegister, immediateOperand);
 			break;
 		case "SW": // Store Word
-			register_operand1 = new Register(operands[0]);
-			memory_operand = new Memory(operands[1]);
-			inst = new SW(register_operand1, memory_operand);
+			destinationRegister = new Register(operands[0]);
+			memoryOperand = new Memory(operands[1]);
+			instruction = new SW(destinationRegister, memoryOperand);
 			break;
 		case "SD":
-			register_operand1 = new Register(operands[0]);
-			memory_operand = new Memory(operands[1]);
-			inst = new SD(register_operand1, memory_operand);
+			destinationRegister = new Register(operands[0]);
+			memoryOperand = new Memory(operands[1]);
+			instruction = new SD(destinationRegister, memoryOperand);
 			break;
 		case "DADD":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			register_operand3 = new Register(operands[2]);
-			inst = new DADD(register_operand1, register_operand2, register_operand3);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			sourceRegister2 = new Register(operands[2]);
+			instruction = new DADD(destinationRegister, sourceRegister1, sourceRegister2);
 			break;
 		case "DADDI":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			immediate_operand = new Immediates(operands[2]);
-			inst = new DADDI(register_operand1, register_operand2, immediate_operand);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			immediateOperand = new Immediates(operands[2]);
+			instruction = new DADDI(destinationRegister, sourceRegister1, immediateOperand);
 			break;
 		case "DSUB":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			register_operand3 = new Register(operands[2]);
-			inst = new DSUB(register_operand1, register_operand2, register_operand3);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			sourceRegister2 = new Register(operands[2]);
+			instruction = new DSUB(destinationRegister, sourceRegister1, sourceRegister2);
 			break;
 		case "DSUBI":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			immediate_operand = new Immediates(operands[2]);
-			inst = new DSUBI(register_operand1, register_operand2, immediate_operand);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			immediateOperand = new Immediates(operands[2]);
+			instruction = new DSUBI(destinationRegister, sourceRegister1, immediateOperand);
 			break;
 		case "AND":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			register_operand3 = new Register(operands[2]);
-			inst = new AND(register_operand1, register_operand2, register_operand3);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			sourceRegister2 = new Register(operands[2]);
+			instruction = new AND(destinationRegister, sourceRegister1, sourceRegister2);
 			break;
 		case "ANDI":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			immediate_operand = new Immediates(operands[2]);
-			inst = new ANDI(register_operand1, register_operand2, immediate_operand);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			immediateOperand = new Immediates(operands[2]);
+			instruction = new ANDI(destinationRegister, sourceRegister1, immediateOperand);
 			break;
 		case "OR":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			register_operand3 = new Register(operands[2]);
-			inst = new OR(register_operand1, register_operand2, register_operand3);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			sourceRegister2 = new Register(operands[2]);
+			instruction = new OR(destinationRegister, sourceRegister1, sourceRegister2);
 			break;
 		case "ORI":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			immediate_operand = new Immediates(operands[2]);
-			inst = new ORI(register_operand1, register_operand2, immediate_operand);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			immediateOperand = new Immediates(operands[2]);
+			instruction = new ORI(destinationRegister, sourceRegister1, immediateOperand);
 			break;
 		case "ADDD":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			register_operand3 = new Register(operands[2]);
-			inst = new ADDD(register_operand1, register_operand2, register_operand3);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			sourceRegister2 = new Register(operands[2]);
+			instruction = new ADDD(destinationRegister, sourceRegister1, sourceRegister2);
 			break;
 		case "MULD":
 		case "MULTD":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			register_operand3 = new Register(operands[2]);
-			inst = new MULD(register_operand1, register_operand2, register_operand3);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			sourceRegister2 = new Register(operands[2]);
+			instruction = new MULD(destinationRegister, sourceRegister1, sourceRegister2);
 			break;
 		case "DIVD":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			register_operand3 = new Register(operands[2]);
-			inst = new DIVD(register_operand1, register_operand2, register_operand3);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			sourceRegister2 = new Register(operands[2]);
+			instruction = new DIVD(destinationRegister, sourceRegister1, sourceRegister2);
 			break;
 		case "SUBD":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			register_operand3 = new Register(operands[2]);
-			inst = new SUBD(register_operand1, register_operand2, register_operand3);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			sourceRegister2 = new Register(operands[2]);
+			instruction = new SUBD(destinationRegister, sourceRegister1, sourceRegister2);
 			break;
 		case "J":
-			inst = new J(operands[0]);
+			instruction = new J(operands[0]);
 			break;
 		case "BEQ":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			inst = new BEQ(register_operand1, register_operand2, operands[2]);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			instruction = new BEQ(destinationRegister, sourceRegister1, operands[2]);
 			break;
 		case "BNE":
-			register_operand1 = new Register(operands[0]);
-			register_operand2 = new Register(operands[1]);
-			inst = new BNE(register_operand1, register_operand2, operands[2]);
+			destinationRegister = new Register(operands[0]);
+			sourceRegister1 = new Register(operands[1]);
+			instruction = new BNE(destinationRegister, sourceRegister1, operands[2]);
 			break;
 		case "HLT":
-			inst = new HLT();
+			instruction = new HLT();
 			break;
 		default:
 			throw new Error("Invalid Opcode: " + opcode);
 		}
-		inst.label = label;
+		instruction.label = label;
 
-		return inst;
+		return instruction;
 	}
 }

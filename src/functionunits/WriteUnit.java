@@ -24,7 +24,6 @@ public class WriteUnit {
 	
 	public static void execute(int startId) throws Exception{
 		setWriteBusy(true);
-		RegisterStatus.push_cache_to_registers();
-		//write data to registers.
+		RegisterStatus.writeValuesToRegisters();							//write data to registers.
 	}
 }

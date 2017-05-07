@@ -1,7 +1,5 @@
 package functionunits;
 
-import java.util.ArrayList;
-
 public class Load {
 	private static int noOfUnits = 1;
 	private static int executionCycle =2;
