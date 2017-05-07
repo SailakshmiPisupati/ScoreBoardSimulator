@@ -71,10 +71,10 @@ public class ICache {
 	}
 	
 	public static boolean readFromICache(int instruction){	
-		ICacheAccessedCount++;
+		
 		if(icache[getBlockNumber(instruction)][getOffset(instruction)]==getTag(instruction)){
 			System.out.println("Number of icache hits "+hits);
-			hits++;
+			ICacheAccessedCount++;hits++;
 			return true;
 		}else{
 			System.out.println("Number of icache miss "+miss);

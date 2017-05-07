@@ -19,7 +19,7 @@ public class Fetch{
 	public static int instructionsFetched =0;
 	public static int lastFetchCycle = 0;
 	public static int icachecount =0; 
-	
+	public static HashMap<Integer,Boolean> hits =new HashMap<Integer,Boolean>();
 	public static HashMap<Integer,Integer> instructionMapping = new HashMap<Integer,Integer>();
 	
 	public static int getInstructionCount() {
@@ -31,10 +31,13 @@ public class Fetch{
 	public static ArrayList<Integer> fetchQueue = new ArrayList<Integer>();
 	public static void execute() {
 		if(!FetchUnit.isFetchBusy && instructionCount != -1){
-				
 				if(ICache.enableIcache && instructionCount != -1){
-					boolean hit =ICache.readFromICache(instructionCount);
+					boolean hit = ICache.readFromICache(instructionCount);
 					if(hit){
+						if(hits.containsKey(instructionsFetched)){
+						}else{
+							hits.put(instructionsFetched, true);
+						}
 						int startId = OutputStatus.add();
 						instructionMapping.put(instructionsFetched, instructionCount);
 						OutputStatus.append(instructionsFetched, 0, instructionCount);
@@ -44,6 +47,7 @@ public class Fetch{
 						instructionCount++;	
 						lastFetchCycle = ScoreBoard.clockCycle;
 					}else{
+						hits.put(instructionsFetched, false);
 						if(Read.readQueue.isEmpty()&&Execute.executeQueue.isEmpty()&&Write.writeQueue.isEmpty()&&Issue.issueQueue.isEmpty()){
 							ScoreBoard.clockCycle = lastFetchCycle;
 							for(int i=0;i<ICache.getBlockSize();i++){
