@@ -26,8 +26,6 @@ public class DCache {
 				lru[i][j]=-1;
 			}
 		}
-		printCacheStatus();
-		printLRUStatus();
 	}
 	
 	public static void printCacheStatus(){
@@ -127,7 +125,6 @@ public class DCache {
 		System.out.println("BlockNumber is "+blockNumber);
 		dcache[setId][blockNumber]=tag;
 		System.out.println(dcache[setId][blockNumber]);
-		printCacheStatus();
 		MemoryStatus.setMemoryReadByCaches(false);
 	}
 	
@@ -179,7 +176,7 @@ public class DCache {
 		if(type.equals("word")){
 			DCacheAccessCount++;
 		}else if(type.equals("double")){
-			DCacheAccessCount++;DCacheAccessCount++;
+			DCacheAccessCount++;
 		}
 	}
 

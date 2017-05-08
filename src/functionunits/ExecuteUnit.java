@@ -25,4 +25,14 @@ public class ExecuteUnit {
 		Write.writeQueue.add(startId);
 	}
 	
+	public static void accessCacheExecute(int count,int startId)throws Exception{
+		Instruction instruction = ScoreBoard.instructions.get(count);
+		instruction.execute();
+		instruction.writeToRegister();
+	}
+	
+	public static void accessCacheFinished(int startId){
+		Write.writeQueue.add(startId);
+	}
+	
 }

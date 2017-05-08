@@ -58,11 +58,12 @@ public class ICache {
 		return tag;
 	}
 	public static void writeToICache(int instruction){
-		for(int i=0;i<numberOfBlocks;i++){
-			for(int j=0;j<blockSize;j++){
-				icache[getBlockNumber(instruction)][getOffset(instruction)]=getTag(instruction);
-			}
-		}
+//		for(int i=0;i<numberOfBlocks;i++){
+//			for(int j=0;j<blockSize;j++){
+//				
+//			}
+//		}
+		icache[getBlockNumber(instruction)][getOffset(instruction)]=getTag(instruction);
 	}
 	
 	public static boolean readFromICache(int instruction){	
@@ -76,7 +77,7 @@ public class ICache {
 	
 	public static void fetchNextInstructions(int instruction){
 		writeToICache(instruction);
-		ScoreBoard.clockCycle++;ScoreBoard.clockCycle++;ScoreBoard.clockCycle++;	//memory access is 3
+		//ScoreBoard.clockCycle++;ScoreBoard.clockCycle++;ScoreBoard.clockCycle++;	//memory access is 3
 	}
 	
 	public static void printCacheStatus(){

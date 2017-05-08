@@ -48,21 +48,26 @@ public class Execute {
 					executeQueue.remove(0);
 				}else if((instruction instanceof LD ||instruction instanceof LW || instruction instanceof SD ||instruction instanceof SW)&&DCache.dCacheEnabled){
 					Issue.issuedInstruction = newId;
-					int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
-					executionCycle++;
-					if(executionTime == executionCycle){
-						if(MemoryStatus.memoryReadByCaches){
-							System.out.println("memory busy");
+					ExecuteUnit.accessCacheExecute(newId,startId);
+					System.out.println(MemoryStatus.memoryReadByCaches);
+					if(!MemoryStatus.memoryReadByCaches){
+						int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
+						executionCycle++;
+						
+						if(executionTime == executionCycle){
+							if(MemoryStatus.memoryReadByCaches){
+								System.out.println("memory busy");
+							}else{
+								executionCycle = 0;
+								executeQueue.remove(0);
+								ExecuteUnit.accessCacheFinished(startId);
+								OutputStatus.appendTo(startId,4,ScoreBoard.clockCycle);
+								WriteUnit.setWriteBusy(false);
+								isexecute = false;
+							}
 						}else{
-							executionCycle = 0;
-							executeQueue.remove(0);
-							ExecuteUnit.execute(newId,startId);
-							OutputStatus.append(startId,4,ScoreBoard.clockCycle);
-							WriteUnit.setWriteBusy(false);
-							isexecute = false;
+							isexecute = true;
 						}
-					}else{
-						isexecute = true;
 					}
 				}else{
 					Issue.issuedInstruction = newId;
