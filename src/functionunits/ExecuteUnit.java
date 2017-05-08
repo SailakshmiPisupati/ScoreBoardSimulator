@@ -18,17 +18,18 @@ public class ExecuteUnit {
 	}
 	
 	public static void execute(int count,int startId) throws Exception{
-		//setIsexecuteBusy(true);
+		setIsexecuteBusy(true);
 		Instruction instruction = ScoreBoard.instructions.get(count);
 		instruction.execute();
 		instruction.writeToRegister();
 		Write.writeQueue.add(startId);
 	}
 	
-	public static void accessCacheExecute(int count,int startId)throws Exception{
+	public static boolean accessCacheExecute(int count,int startId)throws Exception{
 		Instruction instruction = ScoreBoard.instructions.get(count);
 		instruction.execute();
 		instruction.writeToRegister();
+		return true;
 	}
 	
 	public static void accessCacheFinished(int startId){

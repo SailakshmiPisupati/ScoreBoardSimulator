@@ -40,48 +40,60 @@ public class Execute {
 		ReadUnit.setReadBusy(false);
 		if(!ExecuteUnit.isexecuteBusy){
 			if(executeQueue.size()!= 0){
-				int startId = executeQueue.get(0);
-				int newId = Fetch.instructionMapping.get(startId);
-				Instruction instruction = ScoreBoard.instructions.get(newId);
-				if(instruction instanceof BEQ || instruction instanceof BNE){
-					FetchUnit.setFetchBusy(false);
-					executeQueue.remove(0);
-				}else if((instruction instanceof LD ||instruction instanceof LW || instruction instanceof SD ||instruction instanceof SW)&&DCache.dCacheEnabled){
-					Issue.issuedInstruction = newId;
-					ExecuteUnit.accessCacheExecute(newId,startId);
-					System.out.println(MemoryStatus.memoryReadByCaches);
-					if(!MemoryStatus.memoryReadByCaches){
+				if(DCache.dCacheEnabled){
+					int startId = executeQueue.get(0);
+					int newId = Fetch.instructionMapping.get(startId);
+					Instruction instruction = ScoreBoard.instructions.get(newId);
+					if(instruction instanceof BEQ || instruction instanceof BNE){
+						FetchUnit.setFetchBusy(false);
+						executeQueue.remove(0);
+					}else if((instruction instanceof LD ||instruction instanceof LW || instruction instanceof SD ||instruction instanceof SW)&&DCache.dCacheEnabled){
+						Issue.issuedInstruction = newId;
+						System.out.println("**************Next fetch is "+Fetch.nextFetch+" clockcyle "+ScoreBoard.clockCycle);
+						if(!MemoryStatus.memoryReadByCaches && (Fetch.nextFetch==0 || Fetch.nextFetch >= ScoreBoard.clockCycle)){
+							boolean accessVal = ExecuteUnit.accessCacheExecute(newId,startId);
+							if(accessVal){
+								int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
+								executionCycle++;
+								
+								if(executionTime == executionCycle){
+									if(MemoryStatus.memoryReadByCaches){
+									}else{
+										executionCycle = 0;
+										executeQueue.remove(0);
+										ExecuteUnit.accessCacheFinished(startId);
+										OutputStatus.appendTo(startId,4,ScoreBoard.clockCycle);
+										WriteUnit.setWriteBusy(false);
+										isexecute = false;
+									}
+								}else{
+									isexecute = true;
+								}
+							}
+						}
+				}
+				
+				}else{
+					int startId = executeQueue.get(0);
+					int newId = Fetch.instructionMapping.get(startId);
+					Instruction instruction = ScoreBoard.instructions.get(newId);
+					if(instruction instanceof BEQ || instruction instanceof BNE){
+						FetchUnit.setFetchBusy(false);
+						executeQueue.remove(0);
+					}else{
+						Issue.issuedInstruction = newId;
 						int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
 						executionCycle++;
-						
 						if(executionTime == executionCycle){
-							if(MemoryStatus.memoryReadByCaches){
-								System.out.println("memory busy");
-							}else{
-								executionCycle = 0;
-								executeQueue.remove(0);
-								ExecuteUnit.accessCacheFinished(startId);
-								OutputStatus.appendTo(startId,4,ScoreBoard.clockCycle);
-								WriteUnit.setWriteBusy(false);
-								isexecute = false;
-							}
+							executionCycle = 0;
+							executeQueue.remove(0);
+							ExecuteUnit.execute(newId,startId);
+							OutputStatus.append(startId,4,ScoreBoard.clockCycle);
+							WriteUnit.setWriteBusy(false);
+							isexecute = false;
 						}else{
 							isexecute = true;
 						}
-					}
-				}else{
-					Issue.issuedInstruction = newId;
-					int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
-					executionCycle++;
-					if(executionTime == executionCycle){
-						executionCycle = 0;
-						executeQueue.remove(0);
-						ExecuteUnit.execute(newId,startId);
-						OutputStatus.append(startId,4,ScoreBoard.clockCycle);
-						WriteUnit.setWriteBusy(false);
-						isexecute = false;
-					}else{
-						isexecute = true;
 					}
 				}
 				
