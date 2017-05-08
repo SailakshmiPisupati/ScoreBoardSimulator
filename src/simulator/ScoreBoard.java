@@ -3,6 +3,7 @@ package simulator;
 import java.util.HashMap;
 import java.util.TreeMap;
 
+import cache.DCache;
 import cache.ICache;
 import opcodes.Instruction;
 import parser.*;
@@ -22,6 +23,17 @@ public class ScoreBoard {
 		InstructionParser.readFile(args[0]);
 		DataParser.readFile(args[1]);
 		ConfigParser.readFile(args[2]);
+//		boolean dcachehit = false;
+//		dcachehit = DCache.fetchFromDCache(266);
+//		System.out.println("Dcache hit "+dcachehit);
+//		dcachehit = DCache.fetchFromDCache(266);
+//		System.out.println("Dcache hit "+dcachehit);
+//		dcachehit = DCache.fetchFromDCache(266);
+//		System.out.println("Dcache hit "+dcachehit);
+//		dcachehit = DCache.fetchFromDCache(266);
+//		System.out.println("Dcache hit "+dcachehit);
+//		dcachehit = DCache.fetchFromDCache(282);
+		System.out.println("Total dcache accessed "+DCache.DCacheAccessCount+" hits "+DCache.DCachehit);
 		runScoreBoard();
 		
 	}
@@ -43,7 +55,9 @@ public class ScoreBoard {
 		
 	}
 	
-//	public static boolean stopScoreBoard(){
-//		
-//	}
+	public static boolean stopScoreBoard(){
+		if(Fetch.instructionCount ==-1)
+			return true;
+		return false;
+	}
 }

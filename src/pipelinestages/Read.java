@@ -41,10 +41,6 @@ public class Read {
 						OutputStatus.append(startId, 3, ScoreBoard.clockCycle);
 						break;
 					}
-					
-					if(instruction instanceof BNE){
-						IssueUnit.setIssueBusy(true);
-					}
 				}	
 			}		
 		}	

@@ -5,7 +5,14 @@ public class MemoryStatus {
 	public static int startAddress = 0x100;
 	public static int lastAddress;
 	public static TreeMap<Integer, Integer> memoryLocations = new TreeMap<Integer, Integer>();
+	public static boolean memoryReadByCaches = false;
 
+	public static boolean isMemoryReadByCaches() {
+		return memoryReadByCaches;
+	}
+	public static void setMemoryReadByCaches(boolean memoryReadByCaches) {
+		MemoryStatus.memoryReadByCaches = memoryReadByCaches;
+	}
 	public static int getcalculatedAddress(int address) {
 		int new_address = calculateAddress(address);
 

@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.LineNumberReader;
 import java.util.HashMap;
 
+import cache.DCache;
 import cache.ICache;
 import functionunits.Adder;
 import functionunits.Divider;
@@ -50,6 +51,7 @@ public class ConfigParser {
 		}
 		FunctionalUnit.initializeFunctionalUnits();
 		ICache.initializeICache();
+		DCache.initializeDCache();
 	}	
 	
 }

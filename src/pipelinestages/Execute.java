@@ -2,9 +2,15 @@ package pipelinestages;
 
 import java.util.ArrayList;
 
+import cache.DCache;
 import opcodes.BEQ;
 import opcodes.BNE;
 import opcodes.Instruction;
+import opcodes.LD;
+import opcodes.LW;
+import opcodes.SD;
+import opcodes.SW;
+import scoreboardstatus.MemoryStatus;
 import scoreboardstatus.OutputStatus;
 import simulator.ScoreBoard;
 import functionunits.ExecuteUnit;
@@ -40,6 +46,24 @@ public class Execute {
 				if(instruction instanceof BEQ || instruction instanceof BNE){
 					FetchUnit.setFetchBusy(false);
 					executeQueue.remove(0);
+				}else if((instruction instanceof LD ||instruction instanceof LW || instruction instanceof SD ||instruction instanceof SW)&&DCache.dCacheEnabled){
+					Issue.issuedInstruction = newId;
+					int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
+					executionCycle++;
+					if(executionTime == executionCycle){
+						if(MemoryStatus.memoryReadByCaches){
+							System.out.println("memory busy");
+						}else{
+							executionCycle = 0;
+							executeQueue.remove(0);
+							ExecuteUnit.execute(newId,startId);
+							OutputStatus.append(startId,4,ScoreBoard.clockCycle);
+							WriteUnit.setWriteBusy(false);
+							isexecute = false;
+						}
+					}else{
+						isexecute = true;
+					}
 				}else{
 					Issue.issuedInstruction = newId;
 					int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));

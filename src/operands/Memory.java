@@ -25,7 +25,6 @@ public class Memory {
 	}
 
 	public int calculateOffset() throws Exception {
-		System.out.println("base resigiter "+baseRegister.getValue());
 		if(this.baseRegister != null){
 			return (int)this.baseRegister.getValue() + this.offsetAddress;
 		}else{

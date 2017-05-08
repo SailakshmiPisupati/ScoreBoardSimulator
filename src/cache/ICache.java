@@ -1,5 +1,6 @@
 package cache;
 
+import scoreboardstatus.MemoryStatus;
 import simulator.ScoreBoard;
 
 public class ICache {
@@ -40,9 +41,8 @@ public class ICache {
 		int blockNumber =0 ;
 		blockNumber = instruction /getNumberOfBlocks();
 		if(blockNumber >3){
-			while(blockNumber >3){
-				blockNumber = blockNumber/getNumberOfBlocks();
-			}
+			blockNumber = blockNumber / getBlockSize();
+			blockNumber = blockNumber % getNumberOfBlocks();
 		}
 		return blockNumber;
 	}
@@ -50,11 +50,6 @@ public class ICache {
 	public static int getOffset(int instruction){
 		int offset =0 ;
 		offset = instruction % getBlockSize();
-		if(offset > 3){
-			while(offset>3){
-				offset = offset/getBlockSize();
-			}
-		}
 		return offset;
 	}
 	
@@ -71,28 +66,21 @@ public class ICache {
 	}
 	
 	public static boolean readFromICache(int instruction){	
-		
 		if(icache[getBlockNumber(instruction)][getOffset(instruction)]==getTag(instruction)){
-			System.out.println("Number of icache hits "+hits);
 			ICacheAccessedCount++;hits++;
-			return true;
+			return true; 
 		}else{
-			System.out.println("Number of icache miss "+miss);
 			return false;
 		}	
 	}
 	
 	public static void fetchNextInstructions(int instruction){
-		
-			writeToICache(instruction);
-			ScoreBoard.clockCycle++;ScoreBoard.clockCycle++;ScoreBoard.clockCycle++;	//memory access is 3
-//			instruction++;
-//		}
-		//printCacheStatus();
+		writeToICache(instruction);
+		ScoreBoard.clockCycle++;ScoreBoard.clockCycle++;ScoreBoard.clockCycle++;	//memory access is 3
 	}
 	
 	public static void printCacheStatus(){
-		System.out.println("Cache status");
+		System.out.println("I-Cache status");
 		for(int i=0;i<numberOfBlocks;i++){
 			for(int j=0;j<blockSize;j++){
 				System.out.print(icache[i][j]+" ");

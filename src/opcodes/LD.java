@@ -2,6 +2,7 @@ package opcodes;
 
 import java.util.ArrayList;
 
+import cache.DCache;
 import operands.*;
 import scoreboardstatus.MemoryStatus;
 import scoreboardstatus.RegisterStatus;
@@ -17,11 +18,17 @@ public class LD extends Instruction{
 
 	@Override
 	public void writeToRegister() throws Exception {
-		System.out.println("memory operand "+memoryOperand);
-		System.out.println("Memory Operand final address"+memoryOperand.calculateOffset());
-		double value = MemoryStatus.readFromMemory(memoryOperand.calculateOffset(), "double");
-		registerOperand.setValue(value);
-		RegisterStatus.write(registerOperand, value);
+		
+		if(DCache.dCacheEnabled){
+			DCache.fetchFromDCache(memoryOperand.calculateOffset(),"double");
+		}else{
+			double value = MemoryStatus.readFromMemory(memoryOperand.calculateOffset(), "double");
+			registerOperand.setValue(value);
+			RegisterStatus.write(registerOperand, value);
+			
+		}
+		
+		
 	}
 
 	@Override
