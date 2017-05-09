@@ -67,8 +67,8 @@ public class OutputStatus {
 		fw.write("--------------------------------------------------------------------------\n");
 		fw.write("Total number of access requests for instruction cache "+ ICache.ICacheAccessedCount+"\n");
 		fw.write("Number of instruction cache hits: "+icachehits+"\n");
-		fw.write("Total number of access requests for data cache "+"\n");
-		fw.write("Number of data cache hits: "+ICache.hits+"\n");
+		fw.write("Total number of access requests for data cache "+DCache.DCacheAccessCount+"\n");
+		fw.write("Number of data cache hits: "+DCache.DCachehit+"\n");
 		fw.close();
 	}
 

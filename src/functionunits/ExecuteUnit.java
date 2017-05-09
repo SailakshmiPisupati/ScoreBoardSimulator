@@ -1,5 +1,6 @@
 package functionunits;
 
+import cache.DCache;
 import opcodes.Instruction;
 import pipelinestages.Execute;
 import pipelinestages.Write;
@@ -29,7 +30,11 @@ public class ExecuteUnit {
 		Instruction instruction = ScoreBoard.instructions.get(count);
 		instruction.execute();
 		instruction.writeToRegister();
-		return true;
+		if(DCache.DCacheHit){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	public static void accessCacheFinished(int startId){

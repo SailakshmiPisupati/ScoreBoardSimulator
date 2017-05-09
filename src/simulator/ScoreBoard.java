@@ -11,7 +11,7 @@ import pipelinestages.*;
 import scoreboardstatus.OutputStatus;
 
 public class ScoreBoard {
-	private static final int MAX_CYCLE_COUNT = 190;
+	private static final int MAX_CYCLE_COUNT = 250;
 	public static TreeMap<Integer, Instruction> instructions = new TreeMap<Integer, Instruction>();
 	public static HashMap<String, Integer> labelLocation = new HashMap<String, Integer>();
 	public static int clockCycle = 1 ;
@@ -23,17 +23,6 @@ public class ScoreBoard {
 		InstructionParser.readFile(args[0]);
 		DataParser.readFile(args[1]);
 		ConfigParser.readFile(args[2]);
-//		boolean dcachehit = false;
-//		dcachehit = DCache.fetchFromDCache(266);
-//		System.out.println("Dcache hit "+dcachehit);
-//		dcachehit = DCache.fetchFromDCache(266);
-//		System.out.println("Dcache hit "+dcachehit);
-//		dcachehit = DCache.fetchFromDCache(266);
-//		System.out.println("Dcache hit "+dcachehit);
-//		dcachehit = DCache.fetchFromDCache(266);
-//		System.out.println("Dcache hit "+dcachehit);
-//		dcachehit = DCache.fetchFromDCache(282);
-		System.out.println("Total dcache accessed "+DCache.DCacheAccessCount+" hits "+DCache.DCachehit);
 		runScoreBoard();
 		
 	}

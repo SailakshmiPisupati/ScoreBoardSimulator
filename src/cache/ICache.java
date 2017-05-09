@@ -68,7 +68,7 @@ public class ICache {
 	
 	public static boolean readFromICache(int instruction){	
 		if(icache[getBlockNumber(instruction)][getOffset(instruction)]==getTag(instruction)){
-			ICacheAccessedCount++;hits++;
+			//ICacheAccessedCount++;hits++;
 			return true; 
 		}else{
 			return false;

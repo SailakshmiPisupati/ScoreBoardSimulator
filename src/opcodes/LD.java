@@ -21,6 +21,10 @@ public class LD extends Instruction{
 		
 		if(DCache.dCacheEnabled){
 			DCache.fetchFromDCache(memoryOperand.calculateOffset(),"double");
+			System.out.println("after cache calculation -- "+memoryOperand.baseRegister.getValue());
+			double value = MemoryStatus.readFromMemory(memoryOperand.calculateOffset(), "double");
+			registerOperand.setValue(value);
+			RegisterStatus.write(registerOperand, value);
 		}else{
 			double value = MemoryStatus.readFromMemory(memoryOperand.calculateOffset(), "double");
 			registerOperand.setValue(value);

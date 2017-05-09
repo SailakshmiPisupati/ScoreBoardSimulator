@@ -7,6 +7,8 @@ import functionunits.ReadUnit;
 
 import java.util.ArrayList;
 
+import opcodes.BEQ;
+import opcodes.BNE;
 import opcodes.Instruction;
 import operands.Register;
 import scoreboardstatus.OutputStatus;
@@ -42,17 +44,24 @@ public class Issue {
 	
 	public static void execute() throws Exception {
 		int startId =0;
-		if(issueQueue.size()!= 0){
-			for(int i=0;i<issueQueue.size();i++){
-				startId = issueQueue.get(i);
-				int newId = Fetch.instructionMapping.get(startId);
-				boolean isissued = IssueUnit.execute(startId, newId);
-				if(isissued){
-					issueQueue.remove(i);
-					OutputStatus.append(startId, 2, ScoreBoard.clockCycle);
-					break;
+		if(!IssueUnit.isIssueBusy){
+			if(issueQueue.size()!= 0){
+				for(int i=0;i<issueQueue.size();i++){
+					startId = issueQueue.get(i);
+					int newId = Fetch.instructionMapping.get(startId);
+					Instruction instruction = ScoreBoard.instructions.get(newId);
+					if(instruction instanceof BEQ||instruction instanceof BNE){
+						FetchUnit.setFetchBusy(false);
+						System.out.println(Fetch.fetchQueue);
+					}
+					boolean isissued = IssueUnit.execute(startId, newId);
+					if(isissued){
+						issueQueue.remove(i);
+						OutputStatus.append(startId, 2, ScoreBoard.clockCycle);
+						break;
+					}
+					
 				}
-				
 			}
 		}
 	}

@@ -2,6 +2,7 @@ package pipelinestages;
 
 import java.util.ArrayList;
 
+import opcodes.BEQ;
 import opcodes.BNE;
 import opcodes.Instruction;
 import operands.Register;
@@ -24,15 +25,19 @@ public class Read {
 		Read.readInstruction = readInstruction;
 	}
 	public static void execute() throws Exception {
+		IssueUnit.setIssueBusy(false);
 		if(!ReadUnit.isReadBusy()){
 			if(readQueue.size()!= 0){
 				for(int i=0;i<readQueue.size();){
 					int startId = readQueue.get(i);
 					int newId = Fetch.instructionMapping.get(startId);
 					Instruction instruction = ScoreBoard.instructions.get(newId);
-					
+					if(instruction instanceof BNE ||instruction instanceof BEQ ){
+						FetchUnit.setFetchBusy(false);
+						System.out.println(Fetch.fetchQueue);
+						//IssueUnit.setIssueBusy(true);
+					}
 					if(areSourcesWritten(instruction)){
-						System.out.println("RAW hazard");
 						OutputStatus.appendTo(startId, 6, 1);
 						i++;
 					}else{
@@ -54,7 +59,6 @@ public class Read {
 				if(instruction.getDestinationRegister()!=null){
 					if(!sourceReg.get(i).toString().equals(instruction.getDestinationRegister().toString()))
 						if(RegisterStatus.checkIfRegisterIsBusy(sourceReg.get(i).toString())){
-							System.out.println("***********RAW Hazard detected**************");
 							rawHazard = true;
 						}else{
 							rawHazard = false;
@@ -63,9 +67,7 @@ public class Read {
 						rawHazard = false;
 					}
 				}else if(instruction.getDestinationRegister()==null){
-					System.out.println("Instruciton is "+instruction);
 					if(RegisterStatus.checkIfRegisterIsBusy(sourceReg.get(i).toString())){
-						System.out.println("***********RAW Hazard detected**************");
 						rawHazard = true;
 					}else{
 						rawHazard = false;

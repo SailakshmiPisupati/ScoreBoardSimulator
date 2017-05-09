@@ -7,7 +7,7 @@ import operands.Memory;
 import operands.Register;
 
 public class J extends Instruction{
-	public String label;
+	public static String label;
 	
 	public J(String label) {
 		super();

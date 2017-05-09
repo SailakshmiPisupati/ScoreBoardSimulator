@@ -14,7 +14,7 @@ import simulator.ScoreBoard;
 
 public class IssueUnit {
 	
-	public static boolean isIssueBusy;
+	public static boolean isIssueBusy = false;
 	public static String functionalUnit;
 	public static boolean unitAvailable =false;
 	public static boolean wawHazard = false;
@@ -40,12 +40,14 @@ public class IssueUnit {
 			
 			if(instruction instanceof BNE || instruction instanceof BEQ){
 				Read.readQueue.add(startId);
-//				FetchUnit.setFetchBusy(true);
+				FetchUnit.setFetchBusy(false);
 				IssueUnit.setIssueBusy(true);
 			}else if(instruction instanceof HLT){ // in order to stop the loop
 //				FetchUnit.setFetchBusy(false);
-				Fetch.setInstructionCount(-1); 
+				Fetch.setInstructionCount(-1);
 			}else if(instruction instanceof J){
+				FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
+				Fetch.setInstructionCount(ScoreBoard.labelLocation.get(J.label));
 			}else{
 				Read.readQueue.add(startId);
 			}
@@ -58,7 +60,6 @@ public class IssueUnit {
 	private static boolean checkIfWawHazardFound(Instruction instruction, int startId, int issuedInstruction) throws Exception {
 		if(instruction.getDestinationRegister() != null){
 			if(RegisterStatus.checkIfRegisterIsBusy(instruction.getDestinationRegister().toString())){
-				System.out.println("***********WAW Hazard detected**************");
 				OutputStatus.appendTo(startId, 7, 1);
 				//IssueUnit.setIssueBusy(true);				//stall the issue of next instructions since the Functional unit is not free
 				return true;

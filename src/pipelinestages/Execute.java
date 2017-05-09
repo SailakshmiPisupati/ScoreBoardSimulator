@@ -1,6 +1,7 @@
 package pipelinestages;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import cache.DCache;
 import opcodes.BEQ;
@@ -21,7 +22,12 @@ import functionunits.WriteUnit;
 
 public class Execute {
 	public static int executionCycle =0;
+	public static int noncacheexecCycle = 0;
 	public static int executed =0;
+	public static int dcacheAccessClock=0;
+	public static int executeCyle =0;
+	public static boolean canExecute = false;
+	public static HashMap<Integer, Integer> instexeccycle = new HashMap<Integer,Integer>();
 	public static int getExecuted() {
 		return executed;
 	}
@@ -38,66 +44,132 @@ public class Execute {
 	public static ArrayList<Integer> executeQueue = new ArrayList<Integer>();
 	public static void execute() throws Exception {
 		ReadUnit.setReadBusy(false);
-		if(!ExecuteUnit.isexecuteBusy){
-			if(executeQueue.size()!= 0){
-				if(DCache.dCacheEnabled){
-					int startId = executeQueue.get(0);
-					int newId = Fetch.instructionMapping.get(startId);
-					Instruction instruction = ScoreBoard.instructions.get(newId);
-					if(instruction instanceof BEQ || instruction instanceof BNE){
-						FetchUnit.setFetchBusy(false);
-						executeQueue.remove(0);
-					}else if((instruction instanceof LD ||instruction instanceof LW || instruction instanceof SD ||instruction instanceof SW)&&DCache.dCacheEnabled){
-						Issue.issuedInstruction = newId;
-						System.out.println("**************Next fetch is "+Fetch.nextFetch+" clockcyle "+ScoreBoard.clockCycle);
-						if(!MemoryStatus.memoryReadByCaches && (Fetch.nextFetch==0 || Fetch.nextFetch >= ScoreBoard.clockCycle)){
-							boolean accessVal = ExecuteUnit.accessCacheExecute(newId,startId);
-							if(accessVal){
-								int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
-								executionCycle++;
-								
-								if(executionTime == executionCycle){
-									if(MemoryStatus.memoryReadByCaches){
-									}else{
-										executionCycle = 0;
-										executeQueue.remove(0);
-										ExecuteUnit.accessCacheFinished(startId);
-										OutputStatus.appendTo(startId,4,ScoreBoard.clockCycle);
-										WriteUnit.setWriteBusy(false);
-										isexecute = false;
-									}
+		if(DCache.dCacheEnabled){
+			if(!ExecuteUnit.isexecuteBusy){
+				if(executeQueue.size()!= 0){
+					for(int i=0;i<executeQueue.size();i++){
+						int startId = executeQueue.get(i);
+						int newId = Fetch.instructionMapping.get(startId);
+						Instruction instruction = ScoreBoard.instructions.get(newId);
+						if(instruction instanceof BEQ || instruction instanceof BNE){
+							FetchUnit.setFetchBusy(false);
+							executeQueue.remove(i);
+						}else if((instruction instanceof LD ||instruction instanceof LW || instruction instanceof SD ||instruction instanceof SW)){
+							Issue.issuedInstruction = newId;
+							if(!MemoryStatus.memoryReadByCaches && (Fetch.nextFetch == 0 || Fetch.nextFetch >= ScoreBoard.clockCycle) && !canExecute){
+								DCache.setDcacheBusy(true);
+								boolean valueFound  = ExecuteUnit.accessCacheExecute(newId,startId);
+								if(valueFound){
+									DCache.setDcacheBusy(false);
+									canExecute = true;
 								}else{
-									isexecute = true;
+									dcacheAccessClock++;
+									if(dcacheAccessClock == 12){
+										DCache.setDcacheBusy(false);
+										canExecute = true;
+										executeCyle = ScoreBoard.clockCycle +1;
+									}
 								}
 							}
-						}
-				}
-				
-				}else{
-					int startId = executeQueue.get(0);
-					int newId = Fetch.instructionMapping.get(startId);
-					Instruction instruction = ScoreBoard.instructions.get(newId);
-					if(instruction instanceof BEQ || instruction instanceof BNE){
-						FetchUnit.setFetchBusy(false);
-						executeQueue.remove(0);
-					}else{
-						Issue.issuedInstruction = newId;
-						int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
-						executionCycle++;
-						if(executionTime == executionCycle){
-							executionCycle = 0;
-							executeQueue.remove(0);
-							ExecuteUnit.execute(newId,startId);
-							OutputStatus.append(startId,4,ScoreBoard.clockCycle);
-							WriteUnit.setWriteBusy(false);
-							isexecute = false;
+							
+							if(canExecute && executeCyle <= ScoreBoard.clockCycle){
+								DCache.DCacheAccessCount++;
+								dcacheAccessClock = 0;
+								int executionTime;
+								if(instruction instanceof LW || instruction instanceof SW){
+									executionTime  =1;
+									executionCycle++;
+								}else{
+									executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
+									if(instexeccycle.containsKey(startId)){
+										executionCycle =instexeccycle.remove(startId);
+										executionCycle++;
+										instexeccycle.put(startId, executionCycle);
+										
+									}else{
+										executionCycle++;
+										instexeccycle.put(startId, executionCycle);
+										
+									}
+								}
+								
+								if(executionTime == executionCycle){
+									executionCycle = 0;
+									executeQueue.remove(i);
+									ExecuteUnit.accessCacheFinished(startId);
+									OutputStatus.appendTo(startId,4,ScoreBoard.clockCycle);
+									WriteUnit.setWriteBusy(false);
+									isexecute = false;
+									canExecute = false;
+								}else{
+									isexecute = true;
+								}	
+							}
 						}else{
-							isexecute = true;
+							Issue.issuedInstruction = newId;
+							int executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
+							
+							if(instexeccycle.containsKey(startId)){
+								noncacheexecCycle =instexeccycle.remove(startId);
+								noncacheexecCycle++;
+								instexeccycle.put(startId, noncacheexecCycle);
+								
+							}else{
+								noncacheexecCycle++;
+								instexeccycle.put(startId, noncacheexecCycle);
+								
+							}
+						
+							if(executionTime <= noncacheexecCycle){
+								noncacheexecCycle = 0;
+								executeQueue.remove(i);
+								ExecuteUnit.execute(newId,startId);
+								OutputStatus.append(startId,4,ScoreBoard.clockCycle);
+								WriteUnit.setWriteBusy(false);
+								isexecute = false;
+							}else{
+								isexecute = true;
+							}
 						}
 					}
 				}
-				
 			}
-		}	
-	}
+		}else if(!DCache.dCacheEnabled){
+			if(!ExecuteUnit.isexecuteBusy){
+				if(executeQueue.size()!= 0){
+					for(int i=0;i<executeQueue.size();i++){
+						int startId = executeQueue.get(i);
+						int newId = Fetch.instructionMapping.get(startId);
+						Instruction instruction = ScoreBoard.instructions.get(newId);
+						if(instruction instanceof BEQ || instruction instanceof BNE){
+							FetchUnit.setFetchBusy(false);
+							executeQueue.remove(i);
+						}else{
+							Issue.issuedInstruction = newId;
+							int executionTime;
+							if(instruction instanceof LW || instruction instanceof SW){
+								executionTime  =1;
+								executionCycle++;
+							}else{
+								executionTime = FunctionalUnit.getLatency(Instruction.getFunctionalUnit(ScoreBoard.instructions.get(newId)));
+								executionCycle++;
+							}
+							
+							if(executionTime <= executionCycle){
+								executionCycle = 0;
+								executeQueue.remove(i);
+								ExecuteUnit.execute(newId,startId);
+								OutputStatus.append(startId,4,ScoreBoard.clockCycle);
+								WriteUnit.setWriteBusy(false);
+								isexecute = false;
+							}else{
+								isexecute = true;
+							}
+						}
+					}	
+				}
+			}
+		}
+		
+	}	
 }

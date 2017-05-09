@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import javax.swing.text.AbstractDocument.BranchElement;
 
+import cache.DCache;
 import cache.ICache;
 import opcodes.Instruction;
 import scoreboardstatus.MemoryStatus;
@@ -18,6 +19,12 @@ public class Fetch{
 
 	public static int instructionCount = 0;
 	public static int instructionsFetched =0;
+	public static int getInstructionsFetched() {
+		return instructionsFetched;
+	}
+	public static void setInstructionsFetched(int instructionsFetched) {
+		Fetch.instructionsFetched = instructionsFetched;
+	}
 	public static int lastFetchCycle = 0;
 	public static int icachecount =0; 
 	public static boolean icacheReady =false;
@@ -55,8 +62,9 @@ public class Fetch{
 						ifetched++;
 						if((ifetched %ICache.getNumberOfBlocks())==0){
 							//nextFetch = ScoreBoard.clockCycle +1;
-							setNextFetch(ScoreBoard.clockCycle +1);
-							System.out.println("***************Next fetch in fetch unit "+nextFetch);
+							if(!DCache.DcacheBusy){
+								setNextFetch(ScoreBoard.clockCycle +1);
+							}
 							setIcacheReady(false);
 						}
 						int newInstruction = fetchQueue.remove(0);
@@ -73,16 +81,15 @@ public class Fetch{
 						instructionCount++;	
 						
 					}else if(!icacheReady && !MemoryStatus.memoryReadByCaches){
-						
-						icachehits.put(instructionsFetched, false);
 						icacheFetchCycle++;
-						
 						if(icacheFetchCycle==3){
+							ICache.ICacheAccessedCount++;
 							icacheFetchCycle =0;
 							fetchQueue.add(instructionsFetched);
 							instructionsFetched++;
 							icachecount++;
 							if(icachecount % ICache.numberOfBlocks == 0){
+								icachehits.put(instructionsFetched, false);
 								icacheReady=true;nextFetch =0;
 							}
 						}

@@ -27,6 +27,9 @@ public class LW extends Instruction{
 		if(DCache.dCacheEnabled){
 			//checkfrom cache
 			DCache.fetchFromDCache(memoryOperand.calculateOffset(),"word");
+			double value = MemoryStatus.readFromMemory(memoryOperand.calculateOffset(), "word");
+			registerOperand.setValue(value);
+			RegisterStatus.write(registerOperand, value);
 			
 		}else{
 			double value = MemoryStatus.readFromMemory(memoryOperand.calculateOffset(), "word");

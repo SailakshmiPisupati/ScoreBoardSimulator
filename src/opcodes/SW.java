@@ -24,6 +24,7 @@ public class SW extends Instruction{
 	public void writeToRegister() throws Exception {
 		if(DCache.dCacheEnabled){
 			DCache.addToDCache(memoryOperand.calculateOffset(),"word");
+			MemoryStatus.writeToMemory(memoryOperand.calculateOffset(), "word", (int) registerOperand.getValue());
 		}else{
 			MemoryStatus.writeToMemory(memoryOperand.calculateOffset(), "word", (int) registerOperand.getValue());
 		}
@@ -32,7 +33,7 @@ public class SW extends Instruction{
 
 	@Override
 	public Register getDestinationRegister() throws Exception {
-		return null;
+		return this.registerOperand;
 	}
 
 	@Override

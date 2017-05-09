@@ -1,5 +1,12 @@
 package cache;
 
+import functionunits.ExecuteUnit;
+import opcodes.Instruction;
+import opcodes.LD;
+import opcodes.LW;
+import opcodes.SD;
+import opcodes.SW;
+import pipelinestages.Execute;
 import scoreboardstatus.MemoryStatus;
 import simulator.ScoreBoard;
 
@@ -7,12 +14,21 @@ public class DCache {
 	public static boolean dCacheEnabled = true;
 	public static int noOfSets = 2;
 	public static int blocksPerSet = 2;
-	//public static int wordsPerBlock = 2;
 	public static int dcache[][];
 	public static int lru[][];
 	public static int DCacheAccessCount=0;
 	public static int DCachehit =0;
+	public static boolean DcacheBusy = false;
+	public static boolean DCacheHit = false;
 	
+	public static boolean isDcacheBusy() {
+		return DcacheBusy;
+	}
+
+	public static void setDcacheBusy(boolean dcacheBusy) {
+		DcacheBusy = dcacheBusy;
+	}
+
 	public static void initializeDCache(){
 		dcache= new int[getNoOfSets()][getBlocksPerSet()];
 		lru= new int[getNoOfSets()][getBlocksPerSet()];
@@ -71,8 +87,8 @@ public class DCache {
 	}
 	
 	public static void fetchFromDCache(int memoryAddress,String type){
-		if(cacheLineBusy()){
-		}else{
+//		if(cacheLineBusy()){
+//		}else{
 			markDCacheAccess(type);
 			System.out.println("Cache data requested for memory address "+memoryAddress);
 			int cacheAddress = getCacheAddress(memoryAddress);
@@ -81,16 +97,18 @@ public class DCache {
 			
 			int hit = checkDCache(tag,setId);
 			System.out.println("Hits "+hit);
+			//printCacheStatus();
 			if(hit == 1){
-				DCachehit++;
+				DCacheHit = true;
 				MemoryStatus.setMemoryReadByCaches(false);
 				
-			}else{
-				ScoreBoard.clockCycle = ScoreBoard.clockCycle +12;
+			}else if(Execute.dcacheAccessClock == 11){
+				DCacheHit = false;
 				addValueToCache(tag, setId);
-				
+				System.out.println("After adding value to cache");
+				printCacheStatus();
 			}
-		}
+//		}
 	}
 	
 	public static int checkDCache(int tag, int setId){
@@ -137,7 +155,7 @@ public class DCache {
 		}
 		//if the cache is full, LRU policy is applied and the LRU block number is provided
 		if(blockNumber == -1){
-			ScoreBoard.clockCycle = ScoreBoard.clockCycle +12;					//since the data is then added to the memory, it takes 12 clock cycles
+			//ScoreBoard.clockCycle = ScoreBoard.clockCycle +12;					//since the data is then added to the memory, it takes 12 clock cycles
 			for(int i=0;i<blocksPerSet;i++){
 				if(lru[setId][i]==-1){
 					blockNumber = i;
@@ -147,36 +165,12 @@ public class DCache {
 		}
 		return blockNumber;
 	}
-//	public static int 
-	
-//	public static double readFromDCache(int offset, String type){
-//		boolean hit = false;
-//		if(type is word){
-//			hit = fetchfromcache value 1
-//		}else if(type is double){
-//			hit = fetch from cache value 1
-//			hit = fetch from cache value 2
-//		}
-//	}
-//	
-//	public static boolean fetchFromCache(int address){
-//		if(address in cache){
-//			dcache hit
-//		}else{
-//			if(location on cache is empty){
-//				fetch from the memory and load to cache
-//			}else{
-//				move the cache value to memory
-//				fetchthe required block to cache
-//			}
-//		}
-//	}
-	
+
 	public static void markDCacheAccess(String type){
 		if(type.equals("word")){
-			DCacheAccessCount++;
+			
 		}else if(type.equals("double")){
-			DCacheAccessCount++;
+			
 		}
 	}
 
