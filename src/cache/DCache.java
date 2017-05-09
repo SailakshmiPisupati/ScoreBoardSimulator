@@ -87,28 +87,35 @@ public class DCache {
 	}
 	
 	public static void fetchFromDCache(int memoryAddress,String type){
-//		if(cacheLineBusy()){
-//		}else{
-			markDCacheAccess(type);
-			System.out.println("Cache data requested for memory address "+memoryAddress);
-			int cacheAddress = getCacheAddress(memoryAddress);
-			int setId = getsetId(cacheAddress);
-			int tag = getTag(cacheAddress);
+		boolean word = markDCacheAccess(type);
+		if(word){
+			fetchOnType(memoryAddress);
+		}else{
+			fetchOnType(memoryAddress);
+			fetchOnType(memoryAddress + 1);
+		}
+		
+	}
+	
+	public static void fetchOnType(int memoryAddress){
+		System.out.println("Cache data requested for memory address "+memoryAddress);
+		int cacheAddress = getCacheAddress(memoryAddress);
+		int setId = getsetId(cacheAddress);
+		int tag = getTag(cacheAddress);
+		
+		int hit = checkDCache(tag,setId);
+		System.out.println("Hits "+hit);
+		//printCacheStatus();
+		if(hit == 1){
+			DCacheHit = true;
+			MemoryStatus.setMemoryReadByCaches(false);
 			
-			int hit = checkDCache(tag,setId);
-			System.out.println("Hits "+hit);
-			//printCacheStatus();
-			if(hit == 1){
-				DCacheHit = true;
-				MemoryStatus.setMemoryReadByCaches(false);
-				
-			}else if(Execute.dcacheAccessClock == 11){
-				DCacheHit = false;
-				addValueToCache(tag, setId);
-				System.out.println("After adding value to cache");
-				printCacheStatus();
-			}
-//		}
+		}else if(Execute.dcacheAccessClock == 11){
+			DCacheHit = false;
+			addValueToCache(tag, setId);
+			System.out.println("After adding value to cache");
+			printCacheStatus();
+		}
 	}
 	
 	public static int checkDCache(int tag, int setId){
@@ -166,11 +173,11 @@ public class DCache {
 		return blockNumber;
 	}
 
-	public static void markDCacheAccess(String type){
+	public static boolean markDCacheAccess(String type){
 		if(type.equals("word")){
-			
-		}else if(type.equals("double")){
-			
+			return true;
+		}else{
+			return false;
 		}
 	}
 

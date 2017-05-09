@@ -10,6 +10,7 @@ import javax.swing.text.AbstractDocument.BranchElement;
 
 import cache.DCache;
 import cache.ICache;
+import opcodes.HLT;
 import opcodes.Instruction;
 import scoreboardstatus.MemoryStatus;
 import scoreboardstatus.OutputStatus;
@@ -83,6 +84,7 @@ public class Fetch{
 					}else if(!icacheReady && !MemoryStatus.memoryReadByCaches){
 						icacheFetchCycle++;
 						if(icacheFetchCycle==3){
+							//instructionMapping.put(instructionsFetched, instructionCount);
 							ICache.ICacheAccessedCount++;
 							icacheFetchCycle =0;
 							fetchQueue.add(instructionsFetched);
@@ -93,12 +95,7 @@ public class Fetch{
 								icacheReady=true;nextFetch =0;
 							}
 						}
-						
 						ICache.fetchNextInstructions(instructionsFetched);
-					
-					
-//					if(!MemoryStatus.memoryReadByCaches){
-//						}
 					}
 				}else if(!FetchUnit.isFetchBusy && instructionCount!=-1){
 					int startId = OutputStatus.add();

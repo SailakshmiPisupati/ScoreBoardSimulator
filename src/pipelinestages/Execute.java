@@ -47,7 +47,7 @@ public class Execute {
 		if(DCache.dCacheEnabled){
 			if(!ExecuteUnit.isexecuteBusy){
 				if(executeQueue.size()!= 0){
-					for(int i=0;i<executeQueue.size();i++){
+					for(int i=(executeQueue.size()-1);i>=0;i--){
 						int startId = executeQueue.get(i);
 						int newId = Fetch.instructionMapping.get(startId);
 						Instruction instruction = ScoreBoard.instructions.get(newId);
@@ -115,6 +115,7 @@ public class Execute {
 								instexeccycle.put(startId, noncacheexecCycle);
 								
 							}else{
+								noncacheexecCycle = 0;
 								noncacheexecCycle++;
 								instexeccycle.put(startId, noncacheexecCycle);
 								
