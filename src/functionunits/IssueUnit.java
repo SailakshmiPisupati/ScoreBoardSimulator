@@ -5,6 +5,8 @@ import opcodes.BNE;
 import opcodes.HLT;
 import opcodes.Instruction;
 import opcodes.J;
+import opcodes.SD;
+import opcodes.SW;
 import pipelinestages.Fetch;
 import pipelinestages.Issue;
 import pipelinestages.Read;
@@ -31,6 +33,7 @@ public class IssueUnit {
 		setIssueBusy(true);
 		int newId = Fetch.instructionMapping.get(startId);
 		Instruction instruction = ScoreBoard.instructions.get(newId);
+		System.out.println("instruciton in issue "+instruction);
 		unitAvailable = checkforFunctionalUnit(instruction,startId,issuedInstruction);
 		wawHazard = checkIfWawHazardFound(instruction,startId,issuedInstruction);
 		
@@ -46,7 +49,7 @@ public class IssueUnit {
 //				FetchUnit.setFetchBusy(false);
 				Fetch.setInstructionCount(-1);
 			}else if(instruction instanceof J){
-				FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
+				//FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
 				Fetch.setInstructionCount(ScoreBoard.labelLocation.get(J.label));
 			}else{
 				Read.readQueue.add(startId);
@@ -58,11 +61,19 @@ public class IssueUnit {
 	}
 
 	private static boolean checkIfWawHazardFound(Instruction instruction, int startId, int issuedInstruction) throws Exception {
-		if(instruction.getDestinationRegister() != null){
+		if(instruction.getDestinationRegister() != null && !(instruction instanceof SW || instruction instanceof SD)){
 			if(RegisterStatus.checkIfRegisterIsBusy(instruction.getDestinationRegister().toString())){
 				OutputStatus.appendTo(startId, 7, 1);
 				//IssueUnit.setIssueBusy(true);				//stall the issue of next instructions since the Functional unit is not free
 				return true;
+			}else{
+				return false;
+			}
+		}else if(instruction instanceof SW || instruction instanceof SD){
+			if(RegisterStatus.checkIfRegisterIsBusy(instruction.getDestinationRegister().toString())){
+				OutputStatus.appendTo(startId, 6, 1);
+				//IssueUnit.setIssueBusy(true);				//stall the issue of next instructions since the Functional unit is not free
+				return false;
 			}else{
 				return false;
 			}
@@ -77,7 +88,7 @@ public class IssueUnit {
 		functionalUnit = Instruction.getFunctionalUnit(instruction);
 		if(FunctionalUnit.checkIfFunctionalUnitIsFree(functionalUnit)){
 			return true;
-		}else if(instruction instanceof HLT||instruction instanceof BNE){
+		}else if(instruction instanceof HLT||instruction instanceof BNE ||instruction instanceof BEQ || instruction instanceof J){
 			return true;
 		}else{
 			OutputStatus.appendTo(startId, 8, 1);

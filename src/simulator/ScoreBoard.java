@@ -35,7 +35,7 @@ public class ScoreBoard {
 			Read.execute();
 			Issue.execute();
 			Fetch.execute();
-			//OutputStatus.printResults();
+			OutputStatus.printResults();
 			OutputStatus.writeToOutputFile();
 			//if(stopScoreBoard()) break;							
 			clockCycle++;

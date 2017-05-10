@@ -34,7 +34,6 @@ public class Read {
 					Instruction instruction = ScoreBoard.instructions.get(newId);
 					if(instruction instanceof BNE ||instruction instanceof BEQ ){
 						FetchUnit.setFetchBusy(false);
-						System.out.println(Fetch.fetchQueue);
 						//IssueUnit.setIssueBusy(true);
 					}
 					if(areSourcesWritten(instruction)){

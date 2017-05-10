@@ -92,7 +92,7 @@ public class DCache {
 			fetchOnType(memoryAddress);
 		}else{
 			fetchOnType(memoryAddress);
-			fetchOnType(memoryAddress + 1);
+		//	fetchOnType(memoryAddress + 1);
 		}
 		
 	}
@@ -105,7 +105,7 @@ public class DCache {
 		
 		int hit = checkDCache(tag,setId);
 		System.out.println("Hits "+hit);
-		//printCacheStatus();
+		printCacheStatus();
 		if(hit == 1){
 			DCacheHit = true;
 			MemoryStatus.setMemoryReadByCaches(false);

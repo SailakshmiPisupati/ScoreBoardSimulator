@@ -1,5 +1,6 @@
 package functionunits;
 
+import cache.DCache;
 import opcodes.BEQ;
 import opcodes.BNE;
 import opcodes.HLT;
@@ -15,7 +16,9 @@ import simulator.ScoreBoard;
 public class ReadUnit {
 	
 	public static boolean isReadBusy=false;
-
+	public static boolean isBranch = false;
+	public static int branchJumpTo = 0;
+	
 	public static boolean isReadBusy() {
 		return isReadBusy;
 	}
@@ -32,7 +35,14 @@ public class ReadUnit {
 		if(instruction instanceof BNE){
 			if(((BNE) instruction).checkBranchCondition()){
 				//ScoreBoard.halt = true;
-				Fetch.setInstructionCount(ScoreBoard.labelLocation.get(BNE.label));
+
+				if(DCache.dCacheEnabled){
+					isBranch = true;
+					branchJumpTo = ScoreBoard.labelLocation.get(BNE.label);
+					Fetch.setNextInstruction(ScoreBoard.labelLocation.get(BNE.label));
+				}else{
+					Fetch.setInstructionCount(ScoreBoard.labelLocation.get(BNE.label));
+				}
 				FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
 				Execute.executeQueue.add(startId);
 				FetchUnit.setFetchBusy(true);
@@ -45,8 +55,15 @@ public class ReadUnit {
 		}else if(instruction instanceof BEQ){
 			if(((BEQ) instruction).checkBranchCondition()){
 				//ScoreBoard.halt = true;
+				if(DCache.dCacheEnabled){
+					isBranch = true;
+					branchJumpTo = ScoreBoard.labelLocation.get(BNE.label);
+					Fetch.setNextInstruction(ScoreBoard.labelLocation.get(BEQ.label));
+				}else{
+					Fetch.setInstructionCount(ScoreBoard.labelLocation.get(BEQ.label));
+				}
 				FunctionalUnit.releaseUnit(Instruction.getFunctionalUnit(instruction), (newId));
-				Fetch.setInstructionCount(ScoreBoard.labelLocation.get(BEQ.label));
+				
 				Execute.executeQueue.add(startId);
 				Issue.issueQueue.clear();
 				FetchUnit.setFetchBusy(true);

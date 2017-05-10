@@ -2,6 +2,7 @@ package pipelinestages;
 
 import functionunits.FetchUnit;
 import functionunits.IssueUnit;
+import functionunits.ReadUnit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import javax.swing.text.AbstractDocument.BranchElement;
 
 import cache.DCache;
 import cache.ICache;
+import opcodes.BNE;
 import opcodes.HLT;
 import opcodes.Instruction;
 import scoreboardstatus.MemoryStatus;
@@ -20,6 +22,7 @@ public class Fetch{
 
 	public static int instructionCount = 0;
 	public static int instructionsFetched =0;
+	public static boolean done = false;
 	public static int getInstructionsFetched() {
 		return instructionsFetched;
 	}
@@ -45,6 +48,13 @@ public class Fetch{
 	}
 	public static int icacheFetchCycle =0;
 	public static int ifetched =0;
+	public static int nextInstruction =0;
+	public static int getNextInstruction() {
+		return nextInstruction;
+	}
+	public static void setNextInstruction(int nextInstruction) {
+		Fetch.nextInstruction = nextInstruction;
+	}
 	public static HashMap<Integer,Boolean> icachehits =new HashMap<Integer,Boolean>();
 	public static HashMap<Integer,Integer> instructionMapping = new HashMap<Integer,Integer>();
 	
@@ -68,18 +78,41 @@ public class Fetch{
 							}
 							setIcacheReady(false);
 						}
+						
 						int newInstruction = fetchQueue.remove(0);
+						
 						if(icachehits.containsKey(newInstruction)){
 						}else{
 							icachehits.put(newInstruction, true);
 						}MemoryStatus.setMemoryReadByCaches(false);
 						int startId = OutputStatus.add();
-						instructionMapping.put(newInstruction, instructionCount);
-						OutputStatus.append(newInstruction, 0, instructionCount);
-						OutputStatus.append(newInstruction, 1, ScoreBoard.clockCycle);
-						FetchUnit.executeFetch(newInstruction);
-						newInstruction++;
-						instructionCount++;	
+						if(ReadUnit.isBranch && !done){
+							done = true;
+							nextInstruction = newInstruction +1;
+							instructionMapping.put(newInstruction, instructionCount);
+							OutputStatus.append(newInstruction, 0, instructionCount);
+							OutputStatus.append(newInstruction, 1, ScoreBoard.clockCycle);			
+							instructionCount++;	
+						}else if(ReadUnit.isBranch && nextInstruction == newInstruction){
+							ReadUnit.isBranch = false;
+							instructionCount = ReadUnit.branchJumpTo;
+							instructionMapping.put(newInstruction, instructionCount);
+							OutputStatus.append(newInstruction, 0, instructionCount);
+							OutputStatus.append(newInstruction, 1, ScoreBoard.clockCycle);
+							FetchUnit.executeFetch(newInstruction);
+							
+							newInstruction++;
+							instructionCount++;	
+						}else{
+							instructionMapping.put(newInstruction, instructionCount);
+							OutputStatus.append(newInstruction, 0, instructionCount);
+							OutputStatus.append(newInstruction, 1, ScoreBoard.clockCycle);
+							FetchUnit.executeFetch(newInstruction);
+							
+							newInstruction++;
+							instructionCount++;	
+						}
+						
 						
 					}else if(!icacheReady && !MemoryStatus.memoryReadByCaches){
 						icacheFetchCycle++;
