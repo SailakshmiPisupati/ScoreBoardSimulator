@@ -65,6 +65,7 @@ public class Execute {
 								}else{
 									dcacheAccessClock++;
 									if(dcacheAccessClock == 12){
+										DCache.DCachehit++;
 										DCache.setDcacheBusy(false);
 										canExecute = true;
 										executeCyle = ScoreBoard.clockCycle +1;
