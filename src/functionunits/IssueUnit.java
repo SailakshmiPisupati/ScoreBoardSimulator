@@ -33,7 +33,6 @@ public class IssueUnit {
 		setIssueBusy(true);
 		int newId = Fetch.instructionMapping.get(startId);
 		Instruction instruction = ScoreBoard.instructions.get(newId);
-		System.out.println("instruciton in issue "+instruction);
 		unitAvailable = checkforFunctionalUnit(instruction,startId,issuedInstruction);
 		wawHazard = checkIfWawHazardFound(instruction,startId,issuedInstruction);
 		

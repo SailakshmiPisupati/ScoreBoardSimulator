@@ -140,7 +140,7 @@ public class DCache {
 	
 	public static int getCacheAddress(int memoryAddress){
 		int cacheAddress = memoryAddress - 256;
-		cacheAddress = cacheAddress / 4;
+		cacheAddress = cacheAddress / 16;
 		cacheAddress = cacheAddress +256;
 		return cacheAddress;
 	}

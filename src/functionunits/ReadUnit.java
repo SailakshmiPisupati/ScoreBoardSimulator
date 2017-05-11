@@ -57,7 +57,7 @@ public class ReadUnit {
 				//ScoreBoard.halt = true;
 				if(DCache.dCacheEnabled){
 					isBranch = true;
-					branchJumpTo = ScoreBoard.labelLocation.get(BNE.label);
+					branchJumpTo = ScoreBoard.labelLocation.get(BEQ.label);
 					Fetch.setNextInstruction(ScoreBoard.labelLocation.get(BEQ.label));
 				}else{
 					Fetch.setInstructionCount(ScoreBoard.labelLocation.get(BEQ.label));
